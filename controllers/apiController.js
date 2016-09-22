@@ -33,7 +33,6 @@ module.exports = function(app) {
                 return;
             }
             res.json(results[0]);
-            return;
         });
     });
 
