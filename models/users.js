@@ -11,7 +11,7 @@ exports.Users = {
      * getAllusers will retrieve all of the users from the db. 
      * This method is available via the API. certain type of data will not be display.
      * @param callback is a function(err, results){ process data here }
-     * @return , the results will return an array of objects.
+     * @return the results will return an array of objects.
      **/
     getAllUsers: function(callback) {
         var sql = squel.select().from("users")
@@ -23,7 +23,8 @@ exports.Users = {
     /**
      * getUserById will retrieve one user from the db via the id specified.
      * This method is available via the API. certain type of data will not be display.
-     * @param id, either int or string 
+     * @param id, either int or string
+     * @param callback, your callback function
      * @return from the callback, res or results will return an object.
      **/
     getUserById: function(id, callback) {
@@ -36,7 +37,8 @@ exports.Users = {
     /**
      * getUserByEmail will retrieve one user from the db via the email specified.
      * This method is not available via the API. Thus, we can retrieve all of the information from the users table.
-     * @param email, string 
+     * @param email, string
+     * @param callback, your callback function
      * @return from the callback, res or results will return an object.
      **/
     getUserByEmail: function(email, callback) {
@@ -48,7 +50,8 @@ exports.Users = {
     /**
      * getUserByToken will retrieve one user from the db via the token specified.
      * This method is not available via the API. Thus, we can retrieve all of the information from the users table.
-     * @param token, string 
+     * @param token, string
+     * @param callback, your callback function
      * @return from the callback, res or results will return an object.
      **/
     getUserByToken: function(token, callback) {
@@ -60,7 +63,8 @@ exports.Users = {
     /**
      * getUserByToken will register one user to the db.
      * This method is not available via the API.
-     * @param reqBody, object that contains data for registering the user. reqBody should contain a name, a hashed password, and a email. 
+     * @param reqBody, object that contains data for registering the user. reqBody should contain a name, a hashed password, and a email.
+     * @param callback, your callback function
      * @return from the callback, res or results will return an object.
      **/
     registerUser: function(reqBody, callback) {
@@ -74,6 +78,7 @@ exports.Users = {
      * insertUserInfo will insert data to the user information table via the ID specified.
      * This method is not available via the API.
      * @param id, of an existing user. int or string.
+     * @param callback, your callback function
      * @return from the callback, res or results will return an object.
      **/
     insertUserInfo: function(id, callback) {
@@ -87,6 +92,7 @@ exports.Users = {
      * updateUserToken will update/insert token information to an existing user.
      * This method is not available via the API.
      * @param tokenInfo, an object that contains information needed for the token. this includes email, token, and exiparation date.
+     * @param callback, your callback function
      * @return from the callback, res or results will return an object.
      **/
     updateUserToken: function(tokenInfo, callback) {
@@ -101,6 +107,7 @@ exports.Users = {
      * updateUserPassword will update the users password.
      * This method is not available via the API.
      * @param passwordInfo, an object that contains information needed for the token. this includes pass, token, id, and exiparation date.
+     * @param callback, your callback function
      * @return from the callback, res or results will return an array of one object.
      **/
     updateUserPassword: function(passwordInfo, callback) {
@@ -112,24 +119,24 @@ exports.Users = {
     },
 
     /**
-     * generateHash generates a hash value of a string.
+     * Generates a hash value of a string.
      * This method is not available via the API.
-     * @param password, any type of string.
-     * @return string, a hashed password.
+     * @param {string} password; can be anything.
+     * @return {string} a hashed password.
      **/
     generateHash: function(password) {
         return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
     },
 
     /**
-     * validPassword checks whether a password matches that in the database.
+     * Checks whether a password and hashed password matches.
      * This method is not available via the API.
-     * @param enteredPassword, the password entered by the user, string, not hashed.
-     * @param dbPassword, the hashed password that is retrieved from the database.
-     * @return string, a hashed password.
+     * @param {string} password the password string, not hashed.
+     * @param {string} hashedPassword a hashed password
+     * @return {boolean} true of false if passed matches or not.
      **/
-    validPassword: function(enteredPassword, dbPassword) {
-        return bcrypt.compareSync(enteredPassword, dbPassword);
+    validPassword: function(password, hashedPassword) {
+        return bcrypt.compareSync(password, hashedPassword);
     },
 
     //Begin 'Private' methods. Private methods will only be used in this file, not elsewhere.
@@ -140,6 +147,7 @@ exports.Users = {
      * @param callback, a function(err, res){ do stuff here }
      * @param sql, a sql query.
      * @return from the callback, res or results will return an object or an object, depending on what the sql query was.
+     * @private
      **/
     _retrieveData: function(callback, sql) {
         pool.getConnection(function(err, connection) {
