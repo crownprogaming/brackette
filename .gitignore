@@ -40,3 +40,6 @@ bower_components
 
 # Remove unneccesary files 
 *.ini
+
+# JetBrain nonsense
+.idea
