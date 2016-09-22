@@ -1,0 +1,47 @@
+<% include partials/header %>
+
+<div class="container">
+
+<div class="col-sm-6 col-sm-offset-3">
+
+    <h1><i class="mdi mdi-login-variant"></i> Register</h1>
+ 
+   <% if (message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+    
+    <!-- LOGIN FORM -->
+    <form action="/register" method="post" data-toggle="validator" role="form">
+        <div class="form-group">
+            <label for="inputName">Name</label>
+	    	<input type="text" class="form-control" id="inputName" placeholder="Bob the Builder" name="name" required>
+        </div> 
+        <div class="form-group">
+            <label for="inputEmail" class="control-label">Email</label>
+		    <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email" data-error="The email address is invalid." required>
+		    <div class="help-block with-errors"></div>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+
+            <input type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="Password" name="password" required>
+            <div class="help-block">Minimum of 6 characters</div>
+
+            <label>Re-Enter Password</label>
+            <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match!" placeholder="Confirm" required>
+            <div class="help-block with-errors"></div>
+        </div>
+        <button type="submit" class="btn btn-warning btn-lg">Register</button>
+    </form>
+
+    <hr>
+
+    <p>Already have an account? <a href="/login">Login</a></p>
+    <p>Or go <a href="/">home</a>.</p>
+
+</div>
+
+</div>
+
+
+<% include partials/footer %>

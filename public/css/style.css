@@ -1,0 +1,33 @@
+.navbar {
+	min-height:110px !important
+}
+.navbar-collapse{
+	padding: 0!important;
+}
+.nav>li>a{
+	color:  black;
+	font-size: 1.3em;
+}
+.nav>li>a:hover,
+.nav>li>a:focus{
+    text-decoration: none;
+    background-color: transparent!important;
+    color: #21c2c0;
+}
+.menu-items>li>a:hover{
+	padding-bottom: 18px;
+	border-bottom: 2px solid #21c2c0; 
+}
+.navbar-yellow{
+	background-color: #ffeb3b;
+	border: 0;
+	-webkit-box-shadow: 0px 7px 18px -5px rgba(0,0,0,0.66);
+-moz-box-shadow: 0px 7px 18px -5px rgba(0,0,0,0.66);
+box-shadow: 0px 7px 18px -5px rgba(0,0,0,0.66);
+}
+.logo-home{
+	color: black;
+}
+.navbar-toggle .icon-bar{
+	background-color: black;
+}
