@@ -20,10 +20,10 @@ module.exports = {
             this._createDatabaseTables();
         }
 
-        if (program.seed) {
-            // Seed data base should alwaycreateDatabaseTabless be last command.
-            //this._seedDataBase();
-        }
+        // if (program.seed) {
+        //     // Seed data base should alwaycreateDatabaseTabless be last command.
+        //     //this._seedDataBase();
+        // }
     },
 
     getPool: function() {
