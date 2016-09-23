@@ -22,7 +22,7 @@ module.exports = {
 
         if (program.seed) {
             // Seed data base should alwaycreateDatabaseTabless be last command.
-            this._seedDataBase();
+            //this._seedDataBase();
         }
     },
 
