@@ -48,6 +48,19 @@ exports.Users = {
     },
 
     /**
+     * getUserByFacebookId will retrieve one user from the db via the Facebook id specified.
+     * This method is not available via the API. Thus, we can retrieve all of the information from the users table.
+     * @param id, string or int i forget.
+     * @param callback, your callback function
+     * @return from the callback, res or results will return an object.
+     **/
+    getUserByFacebookId: function(fbID, callback) {
+        var sql = squel.select().from("users")
+            .where("users.facebook_id = ?", fbID).toString();
+        this._retrieveData(callback, sql);
+    },
+
+    /**
      * getUserByToken will retrieve one user from the db via the token specified.
      * This method is not available via the API. Thus, we can retrieve all of the information from the users table.
      * @param token, string
@@ -61,7 +74,7 @@ exports.Users = {
     },
 
     /**
-     * getUserByToken will register one user to the db.
+     * registerUser will register one user to the db.
      * This method is not available via the API.
      * @param reqBody, object that contains data for registering the user. reqBody should contain a name, a hashed password, and a email.
      * @param callback, your callback function
@@ -71,6 +84,20 @@ exports.Users = {
         var sql = squel.insert()
             .into('users')
             .set("name", reqBody.name).set("password", reqBody.password).set("email", reqBody.email).toString();
+        this._retrieveData(callback, sql);
+    },
+
+    /**
+     * registerFacebookUser will register one user to the db via Facebook!
+     * This method is not available via the API.
+     * @param reqBody, object that contains data for registering the user. reqBody should contain a name, a facebook token, facebook id, and a email.
+     * @param callback, your callback function
+     * @return from the callback, res or results will return an object.
+     **/
+    registerFacebookUser: function(reqBody, callback){
+        var sql = squel.insert()
+            .into('users')
+            .set("name", reqBody.name).set("facebook_token", reqBody.token).set("email", reqBody.email).set("facebook_id", reqBody.facebookId).toString();
         this._retrieveData(callback, sql);
     },
 

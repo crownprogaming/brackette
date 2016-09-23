@@ -1,7 +1,9 @@
 /*
  *	Passport.js serves as our authentication tool.
  */
+//TODO: Send email when user registered via facebook. (Make email into funtion and just call it ?)
 var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 var Users = require('../models/users').Users;
 var nodemailer = require("nodemailer");
 var sgTransport = require('nodemailer-sendgrid-transport');
@@ -10,7 +12,7 @@ module.exports = function(passport) {
 
     //used to serialize the user for the session, essentially this gets the users id and with it, creates a session for user.
     passport.serializeUser(function(user, done) {
-        done(null, user.insertId || user[0].id);
+        done(null, user.insertId || user.id || user.facebook_id);
     });
 
     //The information in that session based on what we retrieve via ID.
@@ -78,11 +80,48 @@ module.exports = function(passport) {
             if (!user[0]) {
                 return done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password'));
             }
-            if (!Users.validPassword(password, user[0].password)) {
-                return done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password')); // create the loginMessage and save it to session as flashdata
+            if(user[0].password){
+                //We have a password
+                if (!Users.validPassword(password, user[0].password)) {
+                    return done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password')); // create the loginMessage and save it to session as flashdata
+                }else{
+                    return done(null, user[0]);
+                }
+            }else if((user[0].password === null) && user[0].facebook_token){
+                //No password but has a facebook token, so just throw error that this account 'already exists' by showing wrong password.
+                return done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password'));
+            }else{
+                //No password AND no token...
+                return done(null, false, req.flash('loginMessage', 'rong E-mail and/or Password'));
             }
-            return done(null, user);
+
         });
     }));
 
+    //Middleware for Facebook.
+    passport.use(new FacebookStrategy({
+        clientID: process.env.CLIENTID,
+        clientSecret  : process.env.CLIENTSECRET,
+        callbackURL   : 'http://'+process.env.HOST+':'+process.env.PORT+'/auth/facebook/callback',
+        profileFields: ['id', 'displayName', 'name', 'email'] // get profile image ? add to UserInfo table ?
+    }, function(token, refreshToken, profile, done){
+        process.nextTick(function(){
+            Users.getUserByFacebookId(profile.id, function(err, user){
+                if(err) return done(err);
+                if(user[0]){
+                    return done(null, user[0]); //user found, return that user.
+                }else{
+                    Users.registerFacebookUser({
+                        facebookId: profile.id,
+                        name: profile.name.givenName + " " + profile.name.familyName,
+                        token: token,
+                        email: profile.emails[0].value
+                    }, function (err, res) {
+                        if(err) throw err;
+                        return done(null, res);
+                    });
+                }
+            });
+        });
+    }))
 };
