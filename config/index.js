@@ -2,6 +2,7 @@
  *  This file will export important setup functions, including .env files and mysql connections.
  *******/
 //TODO: Check if this is really needed
+//TODO: Update database tables
 var program = require('commander');
 var mysql = require('mysql');
 var squel = require('squel');
