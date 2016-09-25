@@ -21,7 +21,7 @@ exports.Users = {
     },
 
     /**
-     * getUserBy will one user and of it their data by the field and value specified. If you wish to retrieve by id, field should equal 'id'
+     * Retrieve one user and of it their data by the field and value specified. If you wish to retrieve by id, field should equal 'id'
      * The next parameter, value, should be the value of the field specified. So if type is id, field should be '1'
      * If no field is specified, an error will be thrown.
      * @param {string} field the field type you want to retrieve the user by.
