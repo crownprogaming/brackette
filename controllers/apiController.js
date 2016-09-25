@@ -28,7 +28,7 @@ module.exports = function(app) {
                 });
                 return;
             }
-            if (results === null || results == [] || results === "" || results === undefined) {
+            if (results == null || results == [] || results == "" || results == undefined || results == {}) {
                 res.json(notFoundJSON);
                 return;
             }
