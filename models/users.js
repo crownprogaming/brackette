@@ -21,8 +21,51 @@ exports.Users = {
     },
 
     /**
+     * getUserBy will one user and of it their data by the field and value specified. If you wish to retrieve by id, field should equal 'id'
+     * The next parameter, value, should be the value of the field specified. So if type is id, field should be '1'
+     * If no field is specified, an error will be thrown.
+     * @param {string} field the field type you want to retrieve the user by.
+     * @param {field} string value. 
+     * @return from the callback, res or results will return an object.
+     **/
+
+    getUserBy: function(field, value, callback){
+        var sql = "";
+        console.log("Using getUserBy");
+        console.log(field);
+        switch(field){
+            case 'id':
+                sql = squel.select().from("users")
+                .left_join("profileinfo", null, "profileinfo.userId = users.id")
+                .where("users.id = ?", value).toString();
+                //id is the only left join.
+                break;
+            case 'email': 
+                sql = squel.select().from("users")
+                .where("users.email = ?", value).toString();
+                break;
+            case 'facebookId':
+                sql = squel.select().from("users")
+                .where("users.facebook_id = ?", value).toString();
+                break;
+            case 'googleId':
+                sql = squel.select().from("users")
+                .where("users.google_id = ?", value).toString();
+                break;
+            case 'resetToken':
+                sql = squel.select().from("users")
+                .where("users.resetPasswordToken = ?", value).toString();
+                break;
+            default: 
+                throw new Error("FIELD MUST BE SPECIFIED");
+
+        }
+        this._retrieveData(callback, sql);
+    },
+
+    /**
      * getUserById will retrieve one user from the db via the id specified.
-     * This method is available via the API. certain type of data will not be display.
+     * This method is available via the API. Certain type of data will not be display.
      * @param id, either int or string
      * @param callback, your callback function
      * @return from the callback, res or results will return an object.
@@ -34,52 +77,7 @@ exports.Users = {
         this._retrieveData(callback, sql);
     },
 
-    /**
-     * getUserByEmail will retrieve one user from the db via the email specified.
-     * This method is not available via the API. Thus, we can retrieve all of the information from the users table.
-     * @param email, string
-     * @param callback, your callback function
-     * @return from the callback, res or results will return an object.
-     **/
-    getUserByEmail: function(email, callback) {
-        var sql = squel.select().from("users")
-            .where("users.email = ?", email).toString();
-        this._retrieveData(callback, sql);
-    },
-
-    /**
-     * getUserByFacebookId will retrieve one user from the db via the Facebook id specified.
-     * This method is not available via the API. Thus, we can retrieve all of the information from the users table.
-     * @param id, string or int i forget.
-     * @param callback, your callback function
-     * @return from the callback, res or results will return an object.
-     **/
-    getUserByFacebookId: function(fbID, callback) {
-        var sql = squel.select().from("users")
-            .where("users.facebook_id = ?", fbID).toString();
-        this._retrieveData(callback, sql);
-    },
-
-    /**
-     * getUserByToken will retrieve one user from the db via the token specified.
-     * This method is not available via the API. Thus, we can retrieve all of the information from the users table.
-     * @param token, string
-     * @param callback, your callback function
-     * @return from the callback, res or results will return an object.
-     **/
-    getUserByToken: function(token, callback) {
-        var sql = squel.select().from("users")
-            .where("users.resetPasswordToken = ?", token).toString();
-        this._retrieveData(callback, sql);
-    },
-
-    /**
-     * registerUser will register one user to the db.
-     * This method is not available via the API.
-     * @param reqBody, object that contains data for registering the user. reqBody should contain a name, a hashed password, and a email.
-     * @param callback, your callback function
-     * @return from the callback, res or results will return an object.
-     **/
+   
     registerUser: function(reqBody, callback) {
         var sql = squel.insert()
             .into('users')
@@ -88,7 +86,7 @@ exports.Users = {
     },
 
     /**
-     * registerFacebookUser will register one user to the db via Facebook!
+     * registerFacebookUser will register one user to the db via Facebook.
      * This method is not available via the API.
      * @param reqBody, object that contains data for registering the user. reqBody should contain a name, a facebook token, facebook id, and a email.
      * @param callback, your callback function
@@ -98,6 +96,21 @@ exports.Users = {
         var sql = squel.insert()
             .into('users')
             .set("name", reqBody.name).set("facebook_token", reqBody.token).set("email", reqBody.email).set("facebook_id", reqBody.facebookId).toString();
+        this._retrieveData(callback, sql);
+    },
+
+
+    /**
+     * registerFacebookUser will register one user to the db via Google.
+     * This method is not available via the API.
+     * @param reqBody, object that contains data for registering the user. reqBody should contain a name, a facebook token, facebook id, and a email.
+     * @param callback, your callback function
+     * @return from the callback, res or results will return an object.
+     **/
+    registerGoogleUser: function(reqBody, callback){
+        var sql = squel.insert()
+            .into('users')
+            .set("name", reqBody.name).set("google_token", reqBody.token).set("email", reqBody.email).set("google_id", reqBody.googleId).toString();
         this._retrieveData(callback, sql);
     },
 

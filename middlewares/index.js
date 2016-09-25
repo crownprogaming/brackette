@@ -19,7 +19,7 @@ module.exports = {
                 });
             },
             function(token, done) {
-                Users.getUserByEmail(req.body.email, function(err, user) {
+                Users.getUserBy('email', req.body.email, function(err, user) {
                     if (!user[0]) {
                         req.flash('passwordMessage', "Could not find user.");
                         return res.redirect("/password");
@@ -51,15 +51,15 @@ module.exports = {
                     subject: 'Node.js Reset Password',
                     text: "Someone requested to reset your password, here is the link to do so: " + 'http://' + req.headers.host + '/reset/' + token + '\n\n'
                 };
-                smtpTransport.sendMail(mailOptions, function(err) {
-                    if (err) {
-                        console.dir(err);
-                        req.flash('passwordMessage', "Something went wrong, could not send email.");
-                        return res.redirect("/password");
-                    }
-                    req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
-                    done(null, 'done');
-                });
+                // smtpTransport.sendMail(mailOptions, function(err) {
+                //     if (err) {
+                //         console.dir(err);
+                //         req.flash('passwordMessage', "Something went wrong, could not send email.");
+                //         return res.redirect("/password");
+                //     }
+                //     req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+                //     done(null, 'done');
+                // });
 
             }
         ], function(err) {
@@ -69,7 +69,7 @@ module.exports = {
     },
 
     displayPasswordResetPage: function(req, res, next) {
-        Users.getUserByToken(req.params.token, function(err, results) {
+        Users.getUserBy('resetToken', req.params.token, function(err, results) {
             if (err) {
                 res.redirect("/");
                 return;
@@ -88,9 +88,9 @@ module.exports = {
     setResetPassword: function(req, res, next) {
         async.waterfall([
             function(done) {
-                Users.getUserByToken(req.params.token, function(err, results) {
+                Users.getUserBy('resetToken', req.params.token, function(err, results) {
                     if (err || moment() > moment(results[0].resetPasswordExpires)) {
-                        console.dir("Data has expired! Or maybe the token is wrong...");
+                        console.dir("Date has expired! Or maybe the token is wrong...");
                         req.flash('passwordMessage', 'Password reset token is invalid or has expired. Please send a new email.');
                         return res.redirect('/password');
                     }

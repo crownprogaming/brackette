@@ -4,6 +4,7 @@
 //TODO: Send email when user registered via facebook. (Make email into funtion and just call it ?)
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var Users = require('../models/users').Users;
 var nodemailer = require("nodemailer");
 var sgTransport = require('nodemailer-sendgrid-transport');
@@ -12,12 +13,13 @@ module.exports = function(passport) {
 
     //used to serialize the user for the session, essentially this gets the users id and with it, creates a session for user.
     passport.serializeUser(function(user, done) {
+        console.dir(user);
         done(null, user.insertId || user.id || user.facebook_id);
     });
 
     //The information in that session based on what we retrieve via ID.
     passport.deserializeUser(function(id, done) {
-        Users.getUserById(id, function(err, user) {
+        Users.getUserBy('id', id, function(err, user) {
             done(err, user[0]);
         });
     });
@@ -30,7 +32,7 @@ module.exports = function(passport) {
     }, function(req, email, password, done) {
         process.nextTick(function() {
             //See if email is taken.
-            Users.getUserByEmail(email, function(err, user) {
+            Users.getUserBy('email', email, function(err, user) {
                 if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
                 if (user[0]) {
                     return done(null, false, req.flash('registerMessage', "That E-mail is already taken."));
@@ -58,9 +60,9 @@ module.exports = function(passport) {
                         subject: 'Thank you for signing up with Brackette!',
                         text: "Thank you for registering for Brackette!"
                     };
-                    smtpTransport.sendMail(mailOptions, function(err) {
-                        if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured while sending the confirmation E-mail"));
-                    });
+                    // smtpTransport.sendMail(mailOptions, function(err) {
+                    //     if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured while sending the confirmation E-mail"));
+                    // });
 
                     return done(null, results);
                 });
@@ -75,7 +77,7 @@ module.exports = function(passport) {
         passwordField: 'password',
         passReqToCallback: true //allow to pass entire request.
     }, function(req, email, password, done) {
-        Users.getUserByEmail(email, function(err, user) {
+        Users.getUserBy('email', email, function(err, user) {
             if (err) return done(err);
             if (!user[0]) {
                 return done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password'));
@@ -106,7 +108,7 @@ module.exports = function(passport) {
         profileFields: ['id', 'displayName', 'name', 'email'] // get profile image ? add to UserInfo table ?
     }, function(token, refreshToken, profile, done){
         process.nextTick(function(){
-            Users.getUserByFacebookId(profile.id, function(err, user){
+            Users.getUserBy('facebookId', profile.id, function(err, user){
                 if(err) return done(err);
                 if(user[0]){
                     return done(null, user[0]); //user found, return that user.
@@ -117,6 +119,9 @@ module.exports = function(passport) {
                         token: token,
                         email: profile.emails[0].value
                     }, function (err, res) {
+                        Users.insertUserInfo(res.insertId, function(err, res) {
+                            if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+                        });
                         if(err) throw err;
                         return done(null, res);
                     });
@@ -124,4 +129,38 @@ module.exports = function(passport) {
             });
         });
     }))
+
+
+    //Middleware for Google+
+    passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLECLIENTID,
+        clientSecret: process.env.GOOGLECLIENTSECRET,
+        callbackURL: 'http://localhost:'+process.env.PORT+'/auth/google/callback',
+
+    }, function(token, refreshToken, profile, done){
+        process.nextTick(function(){
+            Users.getUserBy('googleId', profile.id, function(err, user){
+                if(err) return done(err);
+                if(user[0]){
+                    return done(null, user[0]);
+                }else{
+                    console.log(profile.id);
+                    Users.registerGoogleUser({
+                        googleId: profile.id,
+                        token: token,
+                        name: profile.displayName,
+                        email: profile.emails[0].value
+                    }, function(err, res){
+                        Users.insertUserInfo(res.insertId, function(err, res) {
+                            if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+                        });
+                        if(err) throw err;
+                        return done(null, res);
+                    });
+                }
+            });
+        })
+    }));
+
+
 };
