@@ -16,13 +16,13 @@ module.exports = {
             .parse(process.argv);
 
         if (program.createDatabaseTables) {
-            console.log("I will create the database tables!!!");
+            console.log("Creating database tables.");
             this._createDatabaseTables();
         }
 
         // if (program.seed) {
         //     // Seed data base should alwaycreateDatabaseTabless be last command.
-        //     //this._seedDataBase();
+        //     this._seedDataBase();
         // }
     },
 
@@ -95,7 +95,7 @@ module.exports = {
                 console.log("Running...");
             });
 
-            var userTableQuery = "CREATE TABLE IF NOT EXISTS `users` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(150) NOT NULL, `email` varchar(150) NOT NULL, `password` varchar(150) NOT NULL, `resetPasswordToken` varchar(200) DEFAULT NULL, `resetPasswordExpires` datetime DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1";
+            var userTableQuery = "CREATE TABLE IF NOT EXISTS `users` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(150) NOT NULL,`email` varchar(150) NOT NULL,`password` varchar(150) DEFAULT NULL,`resetPasswordToken` varchar(200) DEFAULT NULL,`resetPasswordExpires` datetime DEFAULT NULL,`facebook_token` varchar(255) DEFAULT NULL,`facebook_id` bigint(255) DEFAULT NULL,`google_token` varchar(255) DEFAULT NULL,`google_id` varchar(255) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;";
             connection.query(userTableQuery, function(err, results) {
                 if (err) {
                     console.log(err);
