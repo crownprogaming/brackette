@@ -11,6 +11,7 @@ var express = require('express'),
     morgan = require("morgan"),
     flash = require("connect-flash"),
     session = require("express-session"),
+    favicon = require("serve-favicon"),
     config = require('./config');
 config.setup();
 
@@ -29,6 +30,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(favicon(__dirname+'/public/img/logo-favicon.ico'));
 app.set('view engine', 'ejs');
 
 //Stuff for Passport.
