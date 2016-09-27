@@ -144,6 +144,14 @@ module.exports = {
         res.redirect('/');
     },
 
+    redirectIfLoggedIn: function(req, res, next){
+        console.log("Are you logged in ? Why are you going here...redirecting");
+        if(req.isAuthenticated()){
+            return res.redirect("/profile");
+        }
+        return next();
+    },
+
     isAdmin: function(req, res, next) {
         console.log("Authenticate and check if they have admin priveldge");
     }

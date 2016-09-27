@@ -31,8 +31,6 @@ exports.Users = {
 
     getUserBy: function(field, value, callback){
         var sql = "";
-        console.log("Using getUserBy");
-        console.log(field);
         switch(field){
             case 'id':
                 sql = squel.select().from("users")
@@ -72,8 +70,8 @@ exports.Users = {
      **/
     getUserById: function(id, callback) {
         var sql = squel.select().from("users")
-            .field("users.id").field("users.name").field("profileinfo.profileImg").field("profileinfo.gamerTag")
-            .left_join("profileinfo", null, "profileinfo.userId = users.id").where("users.id = ?", id).toString();
+            .left_join("profileinfo", null, "profileinfo.userId = users.id")
+            .where("users.id = ?", id).toString();
         this._retrieveData(callback, sql);
     },
 
@@ -155,6 +153,28 @@ exports.Users = {
             .table('users')
             .set("password", passwordInfo.pass).set("resetPasswordToken", passwordInfo.resetPasswordToken).set("resetPasswordExpires", passwordInfo.resetPasswordExpires)
             .where("users.id = ?", passwordInfo.id).toString();
+        this._retrieveData(callback, sql);
+    }, 
+
+    //Add info about method.
+    updateUser: function(type, userInfo, callback) {
+        var sql = "";
+        if(type == 'fb'){
+            var sql = squel.update()
+                .table('users')
+                .set("facebook_id", userInfo.facebook_id)
+                .set("facebook_token", userInfo.facebook_token)
+                .set("email", userInfo.email)
+                .where("users.id = ?", userInfo.id).toString();
+        }else if(type=="google"){
+            var sql = squel.update()
+                .table('users')
+                .set("google_id", userInfo.google_token)
+                .set("google_token", userInfo.google_token)
+                .set("email", userInfo.email)
+                .where("users.id = ?", userInfo.id).toString();
+        }
+        
         this._retrieveData(callback, sql);
     },
 
