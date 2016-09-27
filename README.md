@@ -1,7 +1,7 @@
 # Brackette
 ===================
 
-![logo]("/public/img/logo.png") 
+![logo](/public/img/logo.png) 
 
 Brackette allows you to manage your eSports tournaments with ease! With built a built in bracket system, tournament registration, event configuration and many more tools that allow you to run your tournament with the most ease as possible! 
 
