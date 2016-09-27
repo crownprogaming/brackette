@@ -13,7 +13,6 @@ module.exports = function(passport) {
 
     //used to serialize the user for the session, essentially this gets the users id and with it, creates a session for user.
     passport.serializeUser(function(user, done) {
-        console.dir(user);
         done(null, user.insertId || user.id || user.facebook_id);
     });
 
@@ -105,29 +104,44 @@ module.exports = function(passport) {
         clientID: process.env.CLIENTID,
         clientSecret  : process.env.CLIENTSECRET,
         callbackURL   : 'http://'+process.env.HOST+':'+process.env.PORT+'/auth/facebook/callback',
-        profileFields: ['id', 'displayName', 'name', 'email'] // get profile image ? add to UserInfo table ?
-    }, function(token, refreshToken, profile, done){
+        profileFields: ['id', 'displayName', 'name', 'email'], // get profile image ? add to UserInfo table ?
+        passReqToCallback: true
+    }, function(req, token, refreshToken, profile, done){
         process.nextTick(function(){
-            Users.getUserBy('facebookId', profile.id, function(err, user){
-                if(err) return done(err);
-                if(user[0]){
-                    return done(null, user[0]); //user found, return that user.
-                }else{
-                    Users.registerFacebookUser({
-                        facebookId: profile.id,
-                        name: profile.name.givenName + " " + profile.name.familyName,
-                        token: token,
-                        email: profile.emails[0].value
-                    }, function (err, res) {
-                        Users.insertUserInfo(res.insertId, function(err, res) {
-                            if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+            if(!req.user){
+                Users.getUserBy('facebookId', profile.id, function(err, user){
+                    if(err) return done(err);
+                    if(user[0]){
+                        return done(null, user[0]); //user found, return that user.
+                    }else{
+                        Users.registerFacebookUser({
+                            facebookId: profile.id,
+                            name: profile.name.givenName + " " + profile.name.familyName,
+                            token: token,
+                            email: profile.emails[0].value
+                        }, function (err, res) {
+                            Users.insertUserInfo(res.insertId, function(err, res) {
+                                if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+                            });
+                            if(err) throw err;
+                            return done(null, res);
                         });
-                        if(err) throw err;
-                        return done(null, res);
-                    });
-                }
-            });
+                    }
+                });
+            }else{
+                //user already exists and is already logged in, we simply link their accounts together.
+                var user = req.user;
+                user.id = req.user.userId;
+                user.email = profile.emails[0].value;
+                user.facebook_token = token;
+                user.facebook_id = parseInt(profile.id);
+                Users.updateUser('fb', user, function(err, res){
+                    if(err) throw err;
+                    return done(null, user);
+                });
+            }
         });
+    
     }))
 
 
@@ -136,29 +150,42 @@ module.exports = function(passport) {
         clientID: process.env.GOOGLECLIENTID,
         clientSecret: process.env.GOOGLECLIENTSECRET,
         callbackURL: 'http://localhost:'+process.env.PORT+'/auth/google/callback',
+        passReqToCallback: true
 
-    }, function(token, refreshToken, profile, done){
+    }, function(req, token, refreshToken, profile, done){
         process.nextTick(function(){
+            if(!req.user){
             Users.getUserBy('googleId', profile.id, function(err, user){
                 if(err) return done(err);
-                if(user[0]){
-                    return done(null, user[0]);
-                }else{
-                    console.log(profile.id);
-                    Users.registerGoogleUser({
-                        googleId: profile.id,
-                        token: token,
-                        name: profile.displayName,
-                        email: profile.emails[0].value
-                    }, function(err, res){
-                        Users.insertUserInfo(res.insertId, function(err, res) {
-                            if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+                    if(user[0]){
+                        return done(null, user[0]);
+                    }else{
+                        Users.registerGoogleUser({
+                            googleId: profile.id,
+                            token: token,
+                            name: profile.displayName,
+                            email: profile.emails[0].value
+                        }, function(err, res){
+                            Users.insertUserInfo(res.insertId, function(err, res) {
+                                if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+                            });
+                            if(err) throw err;
+                            return done(null, res);
                         });
-                        if(err) throw err;
-                        return done(null, res);
-                    });
-                }
-            });
+                    }
+                });
+            }else{
+                var user = req.user;
+                user.id = req.user.userId;
+                user.email = profile.emails[0].value;
+                user.google_token = token;
+                user.google_id = parseInt(profile.id);
+                //maybe do some check and see if email is already defined or something ? We don't want to replace email if different.
+                Users.updateUser('google', user, function(err, res){
+                    if(err) throw err;
+                    return done(null, user);
+                });
+            }
         })
     }));
 
