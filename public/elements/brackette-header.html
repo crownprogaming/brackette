@@ -1,0 +1,205 @@
+<link rel="stylesheet" type="text/css" href="/assets/css/BebasNeue.css">
+<link rel="import" href="/static/polymer/polymer.html">
+<link rel="import" href="/static/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="/static/paper-tabs/paper-tabs.html">
+<link rel="import" href="/static/paper-tabs/paper-tab.html">
+<link rel="import" href="/static/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/static/iron-icons/iron-icons.html">
+<link rel="import" href="/static/social-iconset/social-iconset.html">
+
+<dom-module id="brackette-header">
+  <template>
+    <style>
+      :host {
+          display: block;
+          margin: 0px;
+      }
+      body {
+          margin: 0px;
+          height: 100vh;
+          background-color: var(--paper-grey-50);
+      } 
+    </style>
+    <style is="custom-style">
+        .flex-center-justified {
+          @apply(--layout-horizontal);
+          @apply(--layout-center-justified);
+        }
+        @media screen and (max-width: 768px) {
+            
+        }
+        @media screen and (min-width: 768px) {
+            .main {
+                width: 750px;
+            }
+        }
+        @media screen and (min-width: 992px) {
+            .main {
+                width: 970px;
+            }
+        }
+        @media screen and (min-width: 1200px) {
+            .main {
+                width: 1170px;
+            }
+        }
+        paper-toolbar.logo {
+            --paper-toolbar-background: transparent;
+            --paper-toolbar-title: {
+                font-family: BebasNeue;
+                font-style: normal;
+                font-weight: normal;
+                color: black;
+                opacity: var(--dark-primary-opacity);
+                margin-left: 0;
+            };
+        }
+        paper-icon-button.toolbar {
+            color: black;
+            opacity: var(--dark-primary-opacity);
+        }
+        paper-tabs {
+            --paper-tabs-selection-bar-color: var(--paper-cyan-500);
+            color: black;
+            opacity: var(--dark-primary-opacity);
+        }
+        paper-tab {
+            --paper-tab-ink: var(--paper-cyan-500);
+        }
+        paper-tab.iron-selected {
+            color: var(--paper-cyan-500);
+        }
+        paper-card {
+            margin: 8px;
+        }
+        .featured-header {
+            @apply(--paper-font-headline);
+            opacity: var(--dark-primary-opacity);
+        }
+        .featured-description {
+            @apply(--paper-font-body1);
+            font-size: 14px;
+            float: left;
+            width: 300px;
+            opacity: var(--dark-secondary-opacity);
+            color: black;
+        }
+        @media screen and (max-width: 600px) {
+            .featured-description {
+                float: none;
+                width: auto;
+            }
+            .mobile-only {
+                visibility: visible;
+            }
+        }
+        @media screen and (min-width: 601px) {
+            .mobile-only {
+                visibility: hidden;
+            }
+        }
+        .featured-details {
+            @apply(--paper-font-body1);
+            overflow: hidden;
+            opacity: var(--dark-secondary-opacity);
+            color: black;
+        }
+        .featured {
+            /*--paper-card-background-color: var(--paper-yellow-500);*/
+        }
+        .main {
+            max-width: 640px;
+            height: 1000px;
+        }
+        paper-header-panel {
+            height: 100vh;
+        }
+        .font-light {
+            color: var(--paper-grey-600);
+        }
+        .self-end {
+            @apply(--layout-self-end);
+        }
+        .divider-dark {
+            color: black;
+            opacity: var(--dark-divider-opacity);
+        }
+        .info-icons {
+            margin-right: 16px;
+            float: left;
+            vertical-align: middle;
+        }
+        .info-lines {
+            height: 32px;
+            vertical-align: middle;
+        }
+        #learn-more {
+            color: var(--paper-cyan-500);
+        }
+        .paper-font-title {
+            @apply(--paper-font-title);
+            margin: 8px;
+        }
+        .paper-font-caption {
+            @apply(--paper-font-caption);
+            margin: 8px;
+        }
+        .see-all {
+            background-color: var(--paper-cyan-500);
+            color: white;
+            float: right;
+            vertical-align: middle;
+            height: 100%;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .home-section-header {
+            display: block;
+        }
+    </style>
+    <style is="custom-style" include="iron-positioning"></style>
+      <header class="fullbleed layout vertical container">
+            <paper-toolbar class="medium-tall logo">
+                <div class="title" id="BebasNeue">
+                    <img src="/assets/img/logo-150x150.png" class="pull-xs-left" width="40px">&nbsp;Brackette
+                </div>
+                <span class="flex"></span>
+                
+                  <paper-icon-button disabled class="toolbar" style="color: grey" icon="search" title="Search Disabled"></paper-icon-button>
+
+                
+                <a href="/login" tabindex="-1">
+                  <paper-icon-button class="toolbar" icon="account-circle" title="Login"></paper-icon-button>
+                </a>
+                <a href="/register" tabindex="-1">
+                  <paper-icon-button class="toolbar" icon="perm-contact-calendar" title="Register"></paper-icon-button>
+                </a>
+                <a href="/auth/facebook" tabindex="-1">
+                  <paper-icon-button class="toolbar" icon="social-iconset:facebook" title="Facebook Login"></paper-icon-button>
+                </a>
+                <a href="/auth/google" tabindex="-1">
+                  <paper-icon-button class="toolbar" icon="social-iconset:googleplus" title="Google Login"></paper-icon-button>
+                </a>
+                <paper-tabs class="bottom self-end" selected="0" fit-container>
+                    <paper-tab name="home">HOME</paper-tab>
+                    <paper-tab name="browse">BROWSE</paper-tab>
+                    <paper-tab name="your events">YOUR EVENTS</paper-tab>
+                </paper-tabs>    
+            </paper-toolbar>  
+      </header>
+    </template>
+  <script>
+  Polymer({
+
+    is: 'brackette-header',
+
+    properties: {
+      prop1: {
+        type: String,
+        value: 'brackette-header',
+      },
+    },
+
+  });
+</script>
+</dom-module>
