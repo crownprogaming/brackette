@@ -14,7 +14,6 @@ var express = require('express'),
     favicon = require("serve-favicon"),
     config = require('./config');
 config.setup();
-
 //'Custom' modules/variables.
 var port = process.env.PORT || 3000;
 var indexController = require("./controllers");

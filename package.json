@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "commander": "^2.9.0",
-    "morgan": "^1.7.0"
+    "morgan": "^1.7.0",
+    "simple-node-logger": "^0.93.12"
   }
 }
