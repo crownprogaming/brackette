@@ -2,6 +2,7 @@
  *	Passport.js serves as our authentication tool.
  */
 //TODO: Send email when user registered via facebook. (Make email into funtion and just call it ?)
+//TODO: What happens if users links both facebook and google account with different emails ? Throw error ? Override email ? Display warning ? 
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -108,23 +109,41 @@ module.exports = function(passport) {
         passReqToCallback: true
     }, function(req, token, refreshToken, profile, done){
         process.nextTick(function(){
-            if(!req.user){
+            if(!req.user){ //is user currenlt logged in ? no ? Then run code below.
                 Users.getUserBy('facebookId', profile.id, function(err, user){
-                    if(err) return done(err);
+                    if(err) return done(err); //there was an error.
                     if(user[0]){
                         return done(null, user[0]); //user found, return that user.
                     }else{
-                        Users.registerFacebookUser({
-                            facebookId: profile.id,
-                            name: profile.name.givenName + " " + profile.name.familyName,
-                            token: token,
-                            email: profile.emails[0].value
-                        }, function (err, res) {
-                            Users.insertUserInfo(res.insertId, function(err, res) {
-                                if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
-                            });
-                            if(err) throw err;
-                            return done(null, res);
+                        //user does not exists based on FB id, check if email matches that of database and facebook.
+                        Users.getUserBy('email', profile.emails[0].value, function(err, userViaEmail){
+                            if(err) return done(err);
+                            if(userViaEmail[0]){
+                                //email matches, so update user that exists with facebook information.
+                                var user = {};
+                                user.id = userViaEmail[0].id;
+                                user.email = userViaEmail[0].email;
+                                user.facebook_token = token;
+                                user.facebook_id = parseInt(profile.id);
+                                Users.updateUser('fb', user, function(err, res){
+                                    if(err) throw err;
+                                    return done(null, user);
+                                });
+                            }else{
+                                //email does not match, so create a new user.
+                                Users.registerFacebookUser({
+                                    facebookId: profile.id,
+                                    name: profile.name.givenName + " " + profile.name.familyName,
+                                    token: token,
+                                    email: profile.emails[0].value
+                                }, function (err, res) {
+                                    Users.insertUserInfo(res.insertId, function(err, res) {
+                                        if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+                                    });
+                                    if(err) throw err;
+                                    return done(null, res);
+                                });
+                            }
                         });
                     }
                 });
@@ -154,23 +173,41 @@ module.exports = function(passport) {
 
     }, function(req, token, refreshToken, profile, done){
         process.nextTick(function(){
-            if(!req.user){
+            if(!req.user){ //is user logged in ? 
             Users.getUserBy('googleId', profile.id, function(err, user){
                 if(err) return done(err);
                     if(user[0]){
-                        return done(null, user[0]);
+                        return done(null, user[0]); //user exists via google id, return user.
                     }else{
-                        Users.registerGoogleUser({
-                            googleId: profile.id,
-                            token: token,
-                            name: profile.displayName,
-                            email: profile.emails[0].value
-                        }, function(err, res){
-                            Users.insertUserInfo(res.insertId, function(err, res) {
-                                if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
-                            });
-                            if(err) throw err;
-                            return done(null, res);
+                        //user does not exists, but do they exists via email ?
+                        Users.getUserBy('email', profile.emails[0].value, function(err, userViaEmail){
+                            if(userViaEmail[0]){
+                                //email matches, ! So that means that there is a user without a linked google account.
+                                //link the account!
+                                var user = {};
+                                user.id = userViaEmail[0].id;
+                                user.email = userViaEmail[0].email;
+                                user.google_token = token;
+                                user.google_id = parseInt(profile.id);
+                                Users.updateUser('google', user, function(err, res){
+                                    if(err) throw err;
+                                    return done(null, user);
+                                });
+                            }else{
+                                 //no email account, AND no user exists...create new user based 
+                                Users.registerGoogleUser({
+                                    googleId: profile.id,
+                                    token: token,
+                                    name: profile.displayName,
+                                    email: profile.emails[0].value
+                                }, function(err, res){
+                                    Users.insertUserInfo(res.insertId, function(err, res) {
+                                        if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+                                    });
+                                    if(err) throw err;
+                                    return done(null, res);
+                                });
+                            }
                         });
                     }
                 });
@@ -180,7 +217,6 @@ module.exports = function(passport) {
                 user.email = profile.emails[0].value;
                 user.google_token = token;
                 user.google_id = parseInt(profile.id);
-                //maybe do some check and see if email is already defined or something ? We don't want to replace email if different.
                 Users.updateUser('google', user, function(err, res){
                     if(err) throw err;
                     return done(null, user);
