@@ -60,6 +60,7 @@ module.exports = function(app, passport) {
             user: req.user
         });
     });
+
     app.get('/auth/facebook', middlewares.redirectIfLoggedIn, passport.authenticate('facebook', { scope : 'email' }));
 
     // handle the callback after facebook has authenticated the user
@@ -78,6 +79,8 @@ module.exports = function(app, passport) {
             failureRedirect : '/'
         }));
 
+    app.get('/unlink/facebook', middlewares.disconnectFacebook);
+    app.get('/unlink/google', middlewares.disconnectGoogle);
     // // locally --------------------------------
     // app.get('/connect/local', function(req, res) {
     //     res.render('connect-local', { message: req.flash('loginMessage') });
@@ -108,5 +111,7 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+
+    app.use(middlewares.isUserLoggedIn);
 
 };
