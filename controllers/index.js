@@ -112,6 +112,4 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
-    app.use(middlewares.isUserLoggedIn);
-
 };

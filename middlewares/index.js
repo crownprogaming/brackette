@@ -144,11 +144,11 @@ module.exports = {
         res.redirect('/');
     },
 
-    isUserLoggedIn(req, res, next){
+    setLocals: function(req, res, next){
         //every ejs file must know if we are logged in or not. this passes the variable of
         //is authenticated to every file.
         res.locals.loggedIn = req.isAuthenticated();
-        res.locals.userId   = req.user ? req.user.id : 0
+        res.locals.userInfo = req.user ? req.user : {}
         next();
     },
 

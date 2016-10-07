@@ -42,7 +42,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(middlewares.isUserLoggedIn);
+app.use(middlewares.setLocals);
 
 //Call in our controllers/routes
 apiController(app); //No passport for API, api just retrieves.
