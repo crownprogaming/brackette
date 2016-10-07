@@ -144,12 +144,38 @@ module.exports = {
         res.redirect('/');
     },
 
+    isUserLoggedIn(req, res, next){
+        //every ejs file must know if we are logged in or not. this passes the variable of
+        //is authenticated to every file.
+        res.locals.loggedIn = req.isAuthenticated();
+        res.locals.userId   = req.user ? req.user.id : 0
+        next();
+    },
+
     redirectIfLoggedIn: function(req, res, next){
         console.log("Are you logged in ? Why are you going here...redirecting");
         if(req.isAuthenticated()){
             return res.redirect("/profile");
         }
         return next();
+    },
+
+    //TODO: what happens if user disconnects accounts but has no password ? maybe we should setup a default password 
+    //if they register via facebook/google ? 
+    disconnectFacebook: function(req, res, next){
+        req.user.facebook_token = null;
+        Users.updateUser('fb', req.user, function(err, succ){
+            if(err) throw err;
+            return res.redirect("/profile");
+        });
+    }, 
+
+    disconnectGoogle: function(req, res, next){
+        req.user.google_token = null;
+        Users.updateUser('google', req.user, function(err, succ){
+            if(err) throw err;
+            return res.redirect("/profile");
+        });
     },
 
     isAdmin: function(req, res, next) {

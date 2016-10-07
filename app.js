@@ -12,7 +12,8 @@ var express = require('express'),
     flash = require("connect-flash"),
     session = require("express-session"),
     favicon = require("serve-favicon"),
-    config = require('./config');
+    config = require('./config'),
+    middlewares = require("./middlewares");
 config.setup();
 //'Custom' modules/variables.
 var port = process.env.PORT || 3000;
@@ -41,6 +42,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+app.use(middlewares.isUserLoggedIn);
 
 //Call in our controllers/routes
 apiController(app); //No passport for API, api just retrieves.
