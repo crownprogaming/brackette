@@ -177,9 +177,7 @@
                     <img src="/assets/img/logo-150x150.png" class="pull-xs-left" width="40px">&nbsp;Brackette
                 </div>
                 <span class="flex"></span>
-                <brackette-login-buttons authentication=[[authentication]] userid=[[userid]]></brackette-login-buttons>
-               
-                
+                <brackette-login-buttons authentication=[[authentication]] userinfo=[[userinfo]]></brackette-login-buttons>
                 <template is="dom-if" if="[[notHomePage()]]">
                     <paper-tabs class="bottom self-end" fit-container>
                         <paper-tab id="homePage">HOME</paper-tab>
@@ -203,8 +201,8 @@
         authentication:{
             type: String
         },
-        userid: {
-            type: String
+        userinfo: {
+            type: Object
         }
     },
     notHomePage: function(){
@@ -215,7 +213,5 @@
         return false;
     }
   });
-  //dom if does not take in functions...find a way around it, it only takes in true or false, we must give it that value.
-
 </script>
 </dom-module>

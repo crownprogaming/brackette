@@ -15,12 +15,19 @@
         paper-button.headerButtons:hover {
            background-color: var(--paper-cyan-500);
         }
+       
     </style>
         <div class="farRightHeader">
             <template is="dom-if" if="[[_isLoggedIn(authentication, 'true')]]">
                   <paper-icon-button disabled class="toolbar" style="color: grey" icon="search" title="Search Disabled"></paper-icon-button>
                 <a href="/profile" tabindex="-1">
-                  <paper-icon-button class="toolbar" icon="account-circle" title="Login" last-response="method"></paper-icon-button>
+                    <template is="dom-if" if="[[noProfileImg()]]">
+                        <paper-icon-button class="toolbar img-circle profile" title="Profile" style="background-image: url('[[userinfo.profileImg]]'); background-size: cover; background-position: center center;"></paper-icon-button>
+                    </template>
+                    <template is="dom-if" if="[[!noProfileImg()]]">
+                        <paper-icon-button class="toolbar" icon="account-circle" title="Profile" last-response="method"></paper-icon-button>
+                    </template>
+                  
                 </a>
             </template>
             <template is="dom-if" if="[[_isLoggedIn(authentication, 'false')]]" >
@@ -40,20 +47,33 @@
         authentication:{
             type: String
         },
-        userid: {
-            type: String
+        userinfo: {
+            type: Object
         }
-    },
-
-    ready: function(){
-        $.get('/api/users/'+this.userid, function(data){
-            console.dir(data);
-        });
     },
     _isLoggedIn: function(auth, valueNeeded){
         return auth == valueNeeded;
+    },
+    ready: function(){
+        console.log("From login buttons element");
+        console.dir(this.authentication);
+        console.dir(this.userinfo)
+    },
+
+    noProfileImg: function(){
+        console.log("Running..");
+        if(this.userinfo != {}){
+            console.log("Object is not empty");
+            //means that there is a userinfo object
+            if(this.userinfo.profileImg != ""){
+                //meaning there is no profileImg.
+                //TODO: this will be an image but better safe than sorry. Check if it's an actual image, else return false.
+                console.log("user does not have profile img");
+                return true;
+            }
+        }
+        return false;
     }
   });
-  //dom if does not take in functions...find a way around it, it only takes in true or false, we must give it that value.
 </script>
 </dom-module>
