@@ -9,7 +9,7 @@ var bcrypt = require('bcrypt-nodejs');
 exports.Users = {
     /**
      * getAllusers will retrieve all of the users from the db. 
-     * This method is available via the API. certain type of data will not be display.
+     * This method is available via the API. Certain type of data will not be display.
      * @param callback is a function(err, results){ process data here }
      * @return the results will return an array of objects.
      **/
@@ -69,7 +69,9 @@ exports.Users = {
      * @return from the callback, res or results will return an object.
      **/
     getUserById: function(id, callback) {
-        var sql = squel.select().from("users")
+        var sql = squel.select()
+            .field('users.id').field('users.name').field('users.email').field('profileImg').field('gamerTag')
+            .from("users")
             .left_join("profileinfo", null, "profileinfo.userId = users.id")
             .where("users.id = ?", id).toString();
         this._retrieveData(callback, sql);
@@ -158,6 +160,7 @@ exports.Users = {
 
     //Add info about method.
     updateUser: function(type, userInfo, callback) {
+        //userInfo should be req.user
         var sql = "";
         if(type == 'fb'){
             var sql = squel.update()
