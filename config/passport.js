@@ -3,6 +3,8 @@
  */
 //TODO: Send email when user registered via facebook. (Make email into funtion and just call it ?)
 //TODO: What happens if users links both facebook and google account with different emails ? Throw error ? Override email ? Display warning ? 
+//TODO: What happens if they disconnect facebook and have no email ? How should this be handled ?
+//TODO: Allow users to reconnect after disconnecting.
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -122,7 +124,7 @@ module.exports = function(passport) {
                                 //email matches, so update user that exists with facebook information.
                                 var user = {};
                                 user.id = userViaEmail[0].id;
-                                user.email = userViaEmail[0].email;
+                                //user.email = userViaEmail[0].email; do not update email
                                 user.facebook_token = token;
                                 user.facebook_id = parseInt(profile.id);
                                 Users.updateUser('fb', user, function(err, res){
@@ -186,7 +188,7 @@ module.exports = function(passport) {
                                 //link the account!
                                 var user = {};
                                 user.id = userViaEmail[0].id;
-                                user.email = userViaEmail[0].email;
+                                //user.email = userViaEmail[0].email; do not override email. TODO: Will this affect login ? 
                                 user.google_token = token;
                                 user.google_id = parseInt(profile.id);
                                 Users.updateUser('google', user, function(err, res){
