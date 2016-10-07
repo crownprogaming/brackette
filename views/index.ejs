@@ -1,14 +1,36 @@
 <% include partials/header %>
-<div class="container">
-	<div class="text-center">
-		<img src="/assets/img/logo-300x300.png" class="m-x-auto d-block">
-	</div>
-	<br>
-    <div class="jumbotron text-center">
-	<h1><span>Welcome to Brackette!</span></h1>
-	<p>As you can see there's not much here...but you got Brackette up and running! Be sure to test out <a href="/api/users">this link</a> to assure the database and API is working correctly! </p>
-    </div>
 
+<div class="container">
+<iron-pages selected="0">
+	<!-- Here we would import the browse .ejs file and so on...-->
+	<div name="home">
+<!-- 		<div class="text-center">
+			<img src="/assets/img/logo-300x300.png" class="m-x-auto d-block">
+		</div> -->
+		<br>
+	    <div class="jumbotron text-center">
+		<h1><span>Welcome to Brackette!</span></h1>
+		<p>As you can see there's not much here...but you got Brackette up and running! Be sure to test out <a href="/api/users">this link</a> to assure the database and API is working correctly! </p>
+	    </div>
+	</div>
+	<!-- Here we would import the browse .ejs file and so on...-->
+	<div name="browse">
+		<p>Browse Page</p>
+	</div>
+	<!-- Here we would import the browse .ejs file and so on...-->
+	<div name="your events">
+		<p>Your events here.</p>
+	</div>  
+</iron-pages>
 </div>
+<script>
+var pages = document.querySelector('iron-pages');
+var tabs = document.querySelector('paper-tabs');
+tabs.addEventListener('iron-select', function() { 
+	pages.selected = tabs.selected;
+});
+
+
+</script>
 <% include partials/footer %>
 
