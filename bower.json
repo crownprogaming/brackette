@@ -35,6 +35,7 @@
     "iron-icons": "PolymerElements/iron-icons#^1.1.3",
     "paper-button": "PolymerElements/paper-button#^1.0.13",
     "social-iconset": "^0.0.5",
-    "bootstrap-social": "^5.0.0"
+    "bootstrap-social": "^5.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.3"
   }
 }
