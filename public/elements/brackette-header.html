@@ -1,12 +1,15 @@
 <link rel="stylesheet" type="text/css" href="/assets/css/BebasNeue.css">
 <link rel="import" href="/static/polymer/polymer.html">
+<link rel="import" href="/static/iron-pages/iron-pages.html">
 <link rel="import" href="/static/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="/static/paper-tabs/paper-tabs.html">
 <link rel="import" href="/static/paper-tabs/paper-tab.html">
+<link rel="import" href="/static/paper-button/paper-button.html">
 <link rel="import" href="/static/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="/static/iron-icons/iron-icons.html">
 <link rel="import" href="/static/social-iconset/social-iconset.html">
-
+<link rel="import" href="/assets/elements/brackette-login-buttons.html">
+<!-- Import all polymer elements that will be used here. -->
 <dom-module id="brackette-header">
   <template>
     <style>
@@ -156,39 +159,63 @@
         .home-section-header {
             display: block;
         }
+        .farRightHeader a{
+            text-decoration: none;
+        }
+        paper-button.headerButtons{
+            background: #21C2C0;
+            color: white;
+        }
+        paper-button.headerButtons:hover {
+           background-color: var(--paper-cyan-500);
+        }
     </style>
-    <style is="custom-style" include="iron-positioning"></style>
       <header class="fullbleed layout vertical container">
+            
             <paper-toolbar class="medium-tall logo">
                 <div class="title" id="BebasNeue">
                     <img src="/assets/img/logo-150x150.png" class="pull-xs-left" width="40px">&nbsp;Brackette
                 </div>
                 <span class="flex"></span>
+                <brackette-login-buttons authentication=[[authentication]] userid=[[userid]]></brackette-login-buttons>
+               
                 
-                  <paper-icon-button disabled class="toolbar" style="color: grey" icon="search" title="Search Disabled"></paper-icon-button>
-                <a href="/login" tabindex="-1">
-                  <paper-icon-button class="toolbar" icon="account-circle" title="Login"></paper-icon-button>
-                </a>
-                <paper-tabs class="bottom self-end" selected="0" fit-container>
-                    <paper-tab name="home">HOME</paper-tab>
-                    <paper-tab name="browse">BROWSE</paper-tab>
-                    <paper-tab name="your events">YOUR EVENTS</paper-tab>
-                </paper-tabs>    
+                <template is="dom-if" if="[[notHomePage()]]">
+                    <paper-tabs class="bottom self-end" fit-container>
+                        <paper-tab id="homePage">HOME</paper-tab>
+                    </paper-tabs> 
+                </template>
+
+                <template is="dom-if" if="[[!notHomePage()]]">
+                    <paper-tabs class="bottom self-end" selected="0" fit-container>
+                        <paper-tab name="home">HOME</paper-tab>
+                        <paper-tab name="browse">BROWSE</paper-tab>
+                        <paper-tab name="your events">YOUR EVENTS</paper-tab>
+                    </paper-tabs> 
+                </template>
             </paper-toolbar>  
       </header>
     </template>
   <script>
-  Polymer({
-
+  Polymer({ 
     is: 'brackette-header',
-
-    properties: {
-      prop1: {
-        type: String,
-        value: 'brackette-header',
-      },
+    properties:{
+        authentication:{
+            type: String
+        },
+        userid: {
+            type: String
+        }
     },
-
+    notHomePage: function(){
+        if(window.location.href.split('/').pop() != ''){
+            //not the home page, 
+            return true;
+        }
+        return false;
+    }
   });
+  //dom if does not take in functions...find a way around it, it only takes in true or false, we must give it that value.
+
 </script>
 </dom-module>

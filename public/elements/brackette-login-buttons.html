@@ -1,0 +1,59 @@
+<link rel="import" href="/static/paper-button/paper-button.html">
+<link rel="import" href="/static/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="/static/social-iconset/social-iconset.html">
+<!-- Import all polymer elements that will be used here. -->
+<dom-module id="brackette-login-buttons">
+  <template>
+    <style is="custom-style">
+        .farRightHeader a{
+            text-decoration: none;
+        }
+        paper-button.headerButtons{
+            background: #21C2C0;
+            color: white;
+        }
+        paper-button.headerButtons:hover {
+           background-color: var(--paper-cyan-500);
+        }
+    </style>
+        <div class="farRightHeader">
+            <template is="dom-if" if="[[_isLoggedIn(authentication, 'true')]]">
+                  <paper-icon-button disabled class="toolbar" style="color: grey" icon="search" title="Search Disabled"></paper-icon-button>
+                <a href="/profile" tabindex="-1">
+                  <paper-icon-button class="toolbar" icon="account-circle" title="Login" last-response="method"></paper-icon-button>
+                </a>
+            </template>
+            <template is="dom-if" if="[[_isLoggedIn(authentication, 'false')]]" >
+                <a href="/login" tabindex="-1">
+                    <paper-button class="headerButtons" raised noink>Login</paper-button>
+                </a>
+                <a href="/register" tabindex="-1">
+                    <paper-button class="headerButtons" raised noink>Register</paper-button>
+                </a>
+            </template>
+        </div>
+</template>
+  <script>
+  Polymer({ 
+    is: 'brackette-login-buttons',
+    properties:{
+        authentication:{
+            type: String
+        },
+        userid: {
+            type: String
+        }
+    },
+
+    ready: function(){
+        $.get('/api/users/'+this.userid, function(data){
+            console.dir(data);
+        });
+    },
+    _isLoggedIn: function(auth, valueNeeded){
+        return auth == valueNeeded;
+    }
+  });
+  //dom if does not take in functions...find a way around it, it only takes in true or false, we must give it that value.
+</script>
+</dom-module>
