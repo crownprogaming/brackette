@@ -8,11 +8,11 @@
         .farRightHeader a{
             text-decoration: none;
         }
-        paper-button.headerButtons{
+        paper-button.brackette-button{
             background: #21C2C0;
             color: white;
         }
-        paper-button.headerButtons:hover {
+        paper-button.brackette-button:hover {
            background-color: var(--paper-cyan-500);
         }
        
@@ -32,10 +32,10 @@
             </template>
             <template is="dom-if" if="[[_isLoggedIn(authentication, 'false')]]" >
                 <a href="/login" tabindex="-1">
-                    <paper-button class="headerButtons" raised noink>Login</paper-button>
+                    <paper-button class="brackette-button" raised noink>Login</paper-button>
                 </a>
                 <a href="/register" tabindex="-1">
-                    <paper-button class="headerButtons" raised noink>Register</paper-button>
+                    <paper-button class="brackette-button" raised noink>Register</paper-button>
                 </a>
             </template>
         </div>
@@ -55,20 +55,15 @@
         return auth == valueNeeded;
     },
     ready: function(){
-        console.log("From login buttons element");
-        console.dir(this.authentication);
-        console.dir(this.userinfo)
+
     },
 
     noProfileImg: function(){
-        console.log("Running..");
         if(this.userinfo != {}){
-            console.log("Object is not empty");
             //means that there is a userinfo object
             if(this.userinfo.profileImg != ""){
                 //meaning there is no profileImg.
                 //TODO: this will be an image but better safe than sorry. Check if it's an actual image, else return false.
-                console.log("user does not have profile img");
                 return true;
             }
         }
