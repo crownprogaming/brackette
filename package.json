@@ -1,6 +1,6 @@
 {
   "name": "brackette",
-  "version": "0.0.1",
+  "version": "0.0.1d",
   "description": "Full suite of tools for tournament organizers.",
   "main": "app.js",
   "scripts": {

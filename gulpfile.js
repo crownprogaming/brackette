@@ -1,8 +1,9 @@
+//run gulp whenever you modify anything in public dir.
 var gulp = require('gulp');
 var vulcanize = require('gulp-vulcanize');
 var minify = require('gulp-minifier');
 
-//For our polymer elements.
+//For polymer elements.
 gulp.task('vulcanize', function() {
   return gulp.src('public/elements/brackette-elements.html')
   .pipe(vulcanize({
@@ -13,20 +14,6 @@ gulp.task('vulcanize', function() {
   .pipe(gulp.dest('dist/elements'));
 });
 
-/*
-gulp.task('minifyJs', function(){
-	return gulp.src([ 
-		'bower_components/jquery/dist/jquery.min.js',
-		'bower_components/bootstrap/dist/js/bootstrap.min.js',
-		'bower_components/bootstrap-validator/dist/validator.min.js',
-		'bower_components/webcomponentsjs/webcomponents-lite.js',
-		'public/js/brackette.js'])
-	.pipe(concat('brackette.js'))
-	.pipe(gulp.dest('dist/js'))
-});
-*/
-
-//minify custom css files
 gulp.task('minifyCss', function(){
 	return gulp.src(['public/css/style.css'])
 	.pipe(minify({
@@ -51,4 +38,5 @@ gulp.task('minifyJs', function(){
 	.pipe(gulp.dest('dist/js'))
 });
 
+//run gulp whenever you modify anything in public dir.
 gulp.task('default', ['vulcanize', 'minifyCss', 'minifyJs']);

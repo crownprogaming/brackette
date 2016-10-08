@@ -15,6 +15,7 @@ var express = require('express'),
     config = require('./config'),
     middlewares = require("./middlewares");
 config.setup();
+
 //'Custom' modules/variables.
 var port = process.env.PORT || 3000;
 var indexController = require("./controllers");
