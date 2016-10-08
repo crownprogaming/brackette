@@ -32,7 +32,9 @@
   },
   "devDependencies": {
     "commander": "^2.9.0",
-    "morgan": "^1.7.0",
-    "simple-node-logger": "^0.93.12"
+    "gulp": "^3.9.1",
+    "gulp-minifier": "^0.1.4",
+    "gulp-vulcanize": "^6.1.0",
+    "morgan": "^1.7.0"
   }
 }

@@ -22,8 +22,9 @@ var apiController = require('./controllers/apiController');
 require('./config/passport')(passport);
 
 // Begin Middleware
-app.use('/assets', express.static(__dirname + "/public"));
-app.use('/static', express.static(__dirname + "/bower_components"));
+app.use('/assets', express.static(__dirname + "/public")); //public will be blank but for now keep it here
+app.use('/lib', express.static(__dirname + "/bower_components"));
+app.use('/static', express.static(__dirname + "/dist"));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -47,6 +48,11 @@ app.use(middlewares.setLocals);
 //Call in our controllers/routes
 apiController(app); //No passport for API, api just retrieves.
 indexController(app, passport);
+
+//404
+app.get('*', function(req, res){
+	res.status(404).send("Page does not exists.");
+});
 
 //Listen on port specified.
 app.listen(port);

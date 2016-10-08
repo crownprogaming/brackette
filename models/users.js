@@ -1,6 +1,5 @@
 /********
  * This is our custom database queries for Users, pulls in data for users.
- * TODO: Assure we return proper information for users.
  *********/
 var pool = require('../config').getPool();
 var squel = require('squel');
