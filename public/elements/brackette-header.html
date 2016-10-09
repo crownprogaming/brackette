@@ -1,0 +1,205 @@
+<dom-module id="brackette-header">
+  <template>
+    <style>
+      :host {
+          display: block;
+          margin: 0px;
+      }
+      body {
+          margin: 0px;
+          height: 100vh;
+          background-color: var(--paper-grey-50);
+      } 
+    </style>
+    <style is="custom-style">
+        .flex-center-justified {
+          @apply(--layout-horizontal);
+          @apply(--layout-center-justified);
+        }
+        @media screen and (max-width: 768px) {
+            
+        }
+        @media screen and (min-width: 768px) {
+            .main {
+                width: 750px;
+            }
+        }
+        @media screen and (min-width: 992px) {
+            .main {
+                width: 970px;
+            }
+        }
+        @media screen and (min-width: 1200px) {
+            .main {
+                width: 1170px;
+            }
+        }
+        paper-toolbar.logo {
+            --paper-toolbar-background: transparent;
+            --paper-toolbar-title: {
+                font-family: BebasNeue;
+                font-style: normal;
+                font-weight: normal;
+                color: black;
+                opacity: var(--dark-primary-opacity);
+                margin-left: 0;
+            };
+        }
+        paper-icon-button.toolbar {
+            color: black;
+            opacity: var(--dark-primary-opacity);
+        }
+        paper-tabs {
+            --paper-tabs-selection-bar-color: var(--paper-cyan-500);
+            color: black;
+            opacity: var(--dark-primary-opacity);
+        }
+        paper-tab {
+            --paper-tab-ink: var(--paper-cyan-500);
+        }
+        paper-tab.iron-selected {
+            color: var(--paper-cyan-500);
+        }
+        paper-card {
+            margin: 8px;
+        }
+        .featured-header {
+            @apply(--paper-font-headline);
+            opacity: var(--dark-primary-opacity);
+        }
+        .featured-description {
+            @apply(--paper-font-body1);
+            font-size: 14px;
+            float: left;
+            width: 300px;
+            opacity: var(--dark-secondary-opacity);
+            color: black;
+        }
+        @media screen and (max-width: 600px) {
+            .featured-description {
+                float: none;
+                width: auto;
+            }
+            .mobile-only {
+                visibility: visible;
+            }
+        }
+        @media screen and (min-width: 601px) {
+            .mobile-only {
+                visibility: hidden;
+            }
+        }
+        .featured-details {
+            @apply(--paper-font-body1);
+            overflow: hidden;
+            opacity: var(--dark-secondary-opacity);
+            color: black;
+        }
+        .featured {
+            /*--paper-card-background-color: var(--paper-yellow-500);*/
+        }
+        .main {
+            max-width: 640px;
+            height: 1000px;
+        }
+        paper-header-panel {
+            height: 100vh;
+        }
+        .font-light {
+            color: var(--paper-grey-600);
+        }
+        .self-end {
+            @apply(--layout-self-end);
+        }
+        .divider-dark {
+            color: black;
+            opacity: var(--dark-divider-opacity);
+        }
+        .info-icons {
+            margin-right: 16px;
+            float: left;
+            vertical-align: middle;
+        }
+        .info-lines {
+            height: 32px;
+            vertical-align: middle;
+        }
+        #learn-more {
+            color: var(--paper-cyan-500);
+        }
+        .paper-font-title {
+            @apply(--paper-font-title);
+            margin: 8px;
+        }
+        .paper-font-caption {
+            @apply(--paper-font-caption);
+            margin: 8px;
+        }
+        .see-all {
+            background-color: var(--paper-cyan-500);
+            color: white;
+            float: right;
+            vertical-align: middle;
+            height: 100%;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        .home-section-header {
+            display: block;
+        }
+        .farRightHeader a{
+            text-decoration: none;
+        }
+        paper-button.headerButtons{
+            background: #21C2C0;
+            color: white;
+        }
+        paper-button.headerButtons:hover {
+           background-color: var(--paper-cyan-500);
+        }
+    </style>
+      <header class="fullbleed layout vertical container">
+            
+            <paper-toolbar class="medium-tall logo">
+                <div class="title" id="BebasNeue">
+                    <img src="/assets/img/logo-150x150.png" class="pull-xs-left" width="40px">&nbsp;Brackette
+                </div>
+                <span class="flex"></span>
+                <brackette-login-buttons authentication=[[authentication]] userinfo=[[userinfo]]></brackette-login-buttons>
+                <template is="dom-if" if="[[notHomePage()]]">
+                    <paper-tabs class="bottom self-end" fit-container>
+                        <paper-tab id="homePage">HOME</paper-tab>
+                    </paper-tabs> 
+                </template>
+
+                <template is="dom-if" if="[[!notHomePage()]]">
+                    <paper-tabs class="bottom self-end" selected="0" fit-container>
+                        <paper-tab name="home">HOME</paper-tab>
+                        <paper-tab name="browse">BROWSE</paper-tab>
+                        <paper-tab name="your events">YOUR EVENTS</paper-tab>
+                    </paper-tabs> 
+                </template>
+            </paper-toolbar>  
+      </header>
+    </template>
+  <script>
+  Polymer({ 
+    is: 'brackette-header',
+    properties:{
+        authentication:{
+            type: String
+        },
+        userinfo: {
+            type: Object
+        }
+    },
+    notHomePage: function(){
+        if(window.location.href.split('/').pop() != ''){
+            //not the home page, 
+            return true;
+        }
+        return false;
+    }
+  });
+</script>
+</dom-module>

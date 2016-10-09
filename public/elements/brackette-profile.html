@@ -1,4 +1,3 @@
-<link rel="import" href="../../bower_components/inline-edit/inline-edit.html">
 <dom-module id="brackette-profile">
   <template>
     <style is="custom-style">
@@ -37,8 +36,8 @@
             <strong>email</strong>: [[userinfo.email]]<br>
             <!--<strong>password</strong>: <br>-->                        
             <strong>profileImg</strong>: [[userinfo.profileImg]]<br>
-            <p><strong>Name:</strong><inline-edit value="{{userinfo.name::input}}" id="userName"></inline-edit></p>
-            <p><strong>Gamer Tag:</strong><inline-edit value="{{userinfo.gamerTag::input}}" id="userNameTag"></inline-edit></p>
+            <p><strong>Name:</strong><inline-edit value="{{userinfo.name::input}}" id="userName" hoverstyle="true"></inline-edit></p>
+            <p><strong>Gamer Tag:</strong><inline-edit value="{{userinfo.gamerTag::input}}" id="userNameTag" hoverstyle="true"></inline-edit></p>
            <!--<strong>facebook_id</strong>: <br>
             <strong>facebook_token</strong>: <br>
             <strong>google_token</strong>: <br>
