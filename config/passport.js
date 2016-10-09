@@ -104,8 +104,8 @@ module.exports = function(passport) {
 
     //Middleware for Facebook.
     passport.use(new FacebookStrategy({
-        clientID: process.env.CLIENTID,
-        clientSecret  : process.env.CLIENTSECRET,
+        clientID: process.env.FBCLIENTID,
+        clientSecret  : process.env.FBCLIENTSECRET,
         callbackURL   : 'http://'+process.env.HOST+':'+process.env.PORT+'/auth/facebook/callback',
         profileFields: ['id', 'displayName', 'name', 'email'], // get profile image ? add to UserInfo table ?
         passReqToCallback: true
