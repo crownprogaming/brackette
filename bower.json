@@ -38,6 +38,6 @@
     "social-iconset": "^0.0.5",
     "bootstrap-social": "^5.0.0",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
-    "inline-edit": "markovuksanovic/polymer-inline-edit"
+    "inline-edit": "HappyZombies/polymer-inline-edit"
   }
 }
