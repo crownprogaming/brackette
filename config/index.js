@@ -6,6 +6,7 @@
 var program = require('commander');
 var mysql = require('mysql');
 var squel = require('squel');
+var Sequelize = require('sequelize');
 require('dotenv').config();
 
 module.exports = {
@@ -43,6 +44,19 @@ module.exports = {
         });
 
         return pool;
+    },
+
+    getSequelize: function(){
+        var seq = new Sequelize(process.env.MYSQL_DB, process.env.MYSQL_USER, process.env.MYSQL_PASS, {
+            host: process.env.HOST,
+            dialect: 'mysql',
+            pool: {
+                max: 5,
+                min: 0,
+                idle: 10000
+            }
+        });
+        return seq;
     },
 
     // 'Private' functions

@@ -2,55 +2,46 @@
  *  Our API Controllers. 
  *******/
 var Users = require('../models/users').Users;
+var USERS2 = require('../models/users2');
 var notFoundJSON = {
     "Error": "404",
     "Message": "Object was not found."
+};
+
+var userOptions = {
+    attributes:{
+        // exclude: ['id', 'updatedAt'] for now show all.
+    }
 };
 
 module.exports = function(app) {
 
     //Users - GET METHODS
     app.get('/api/users', function(req, res) {
-        Users.getAllUsers(function(err, results) {
-            if (err) {
-                res.status(500).send("Server Error");
-                return;
-            }
-            res.json(results);
+
+        USERS2.findAll(userOptions).then(function(user){
+            res.json(user);
+        }).catch(function(err){
+            res.status(500).send("Server Error");
         });
     });
 
     app.get('/api/users/:id', function(req, res) {
-        Users.getUserById(req.params.id, function(err, results) {
-            if (err) {
-                res.status(500).json({
-                    "Error": "Something went wrong."
-                });
-                return;
-            }
-            if (results == null || results == [] || results == "" || results == undefined || results == {}) {
+        USERS2.findById(req.params.id, userOptions).then(function(user){
+            if(user == null || user == [] || user == "" || user == undefined || user == {} || (isNaN(req.params.id))) {
                 res.json(notFoundJSON);
                 return;
             }
-            res.json(results[0]);
+            res.json(user);
+        }).catch(function(err){
+            res.status(500).send("Server Error");
         });
     });
 
 
     //Users - POST METHODS
     app.post('/api/users', function(req, res) {
-        Users.registerUser(req.body, function(err, results) {
-            if (err) {
-                res.send(500, "Server Error");
-                return;
-            }
-            if (results === null || results == [] || results === "" || results === undefined) {
-                res.json(notFoundJSON);
-                return;
-            }
-            console.log("New user was created!");
-            res.json(results.insertId);
-        });
+       
     });
 
     //Tournaments - GET 
