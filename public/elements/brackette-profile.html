@@ -33,10 +33,10 @@
             </div>
             <h3><i class="mdi mdi-account"></i> User Information</h3>
             <!--<strong>id</strong>: <%= user.id %><br>-->                        
-            <strong>email</strong>: [[userinfo.email]]<br>
+            <strong>email</strong>: [[user.email]]<br>
             <!--<strong>password</strong>: <br>-->                        
             <strong>profileImg</strong>: [[userinfo.profileImg]]<br>
-            <p><strong>Name:</strong><inline-edit value="{{userinfo.name::input}}" id="userName" hoverstyle="true"></inline-edit></p>
+            <p><strong>Name:</strong><inline-edit value="{{user.name::input}}" id="userName" hoverstyle="true"></inline-edit></p>
             <p><strong>Gamer Tag:</strong><inline-edit value="{{userinfo.gamerTag::input}}" id="userNameTag" hoverstyle="true"></inline-edit></p>
            <!--<strong>facebook_id</strong>: <br>
             <strong>facebook_token</strong>: <br>
@@ -49,6 +49,9 @@
   Polymer({ 
     is: 'brackette-profile',
     properties:{
+        user: {
+            type: Object
+        },
         userinfo: {
             type: Object
         }
@@ -56,7 +59,7 @@
 
     //each value needs it's own obverse :P 
     observers: [
-        'userNameChanged(userinfo.name)',
+        'userNameChanged(user.name)',
         'userNameChanged(userinfo.gamerTag)',
     ],
 
@@ -65,7 +68,8 @@
     },
     userNameChanged: function(val){
         console.dir("value changed");
-        console.dir(val);
+        console.dir(this.user);
+        console.dir(this.userinfo);
         saveButton.disabled = false;
     },
 

@@ -9,9 +9,17 @@ var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var Users = require('../models/users').Users;
+var USERS2 = require('../models/users2');
+var UserInfo = require('../models/userInfo');
 var nodemailer = require("nodemailer");
 var sgTransport = require('nodemailer-sendgrid-transport');
-
+USERS2.hasMany(UserInfo, {foreignKey: 'userId'});
+UserInfo.belongsTo(USERS2, {foreignKey: 'userId'});
+var userOptions = {
+    include: [{
+        model: UserInfo
+    }]
+};
 module.exports = function(passport) {
 
     //used to serialize the user for the session, essentially this gets the users id and with it, creates a session for user.
@@ -21,11 +29,13 @@ module.exports = function(passport) {
 
     //The information in that session based on what we retrieve via ID.
     passport.deserializeUser(function(id, done) {
-        Users.getUserBy('id', id, function(err, user) {
-            done(err, user[0]);
+         USERS2.findById(id, userOptions).then(function(user){
+            done(null, user);
+        }).catch(function(err){
+            done(null, false);
         });
     });
-
+ 
     //middleware for our local register
     passport.use('local-register', new LocalStrategy({
         usernameField: "email",
@@ -33,45 +43,35 @@ module.exports = function(passport) {
         passReqToCallback: true
     }, function(req, email, password, done) {
         process.nextTick(function() {
-            //See if email is taken.
-            Users.getUserBy('email', email, function(err, user) {
-                if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
-                if (user[0]) {
-                    return done(null, false, req.flash('registerMessage', "That E-mail is already taken."));
+            //See if email is taken. Create user else...
+            USERS2.findOrCreate({
+                where: {
+                    email: email
+                },
+                defaults: {
+                    name: req.body.name,
+                    email: email,
+                    password: password
                 }
-                Users.registerUser({
-                    "name": req.body.name,
-                    "email": email,
-                    "password": Users.generateHash(password)
-                }, function(err, results) {
-                    if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
-                    //Add data to userInfo, it will be empty but we need this column to simply add data.
-                    Users.insertUserInfo(results.insertId, function(err, res) {
-                        if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured."));
+            }).spread(function(user, created){
+                if(created){
+                    //we created a new user. so create their user Info too.
+                    UserInfo.create({
+                        userId: user.id
+                    }).then(function(){
+                        //Send Email here.
+                        done(null, user);
+                    }).catch(function(err){
+                        done(null, false, req.flash('registerMessage', "A unknown error occured."));
                     });
-
-                    var options = {
-                    auth: {
-                        api_key: process.env.SENGRID_API
-                        }
-                    };
-                    var smtpTransport = nodemailer.createTransport(sgTransport(options));
-                    var mailOptions = {
-                        to: email,
-                        from: 'passwordreset@demo.com',
-                        subject: 'Thank you for signing up with Brackette!',
-                        text: "Thank you for registering for Brackette!"
-                    };
-                    // smtpTransport.sendMail(mailOptions, function(err) {
-                    //     if (err) return done(null, false, req.flash('registerMessage', "A unknown error occured while sending the confirmation E-mail"));
-                    // });
-
-                    return done(null, results);
-                });
+                }else{
+                    done(null, false, req.flash('registerMessage', "That E-mail is already taken."));
+                }
+            }).catch(function(err){
+                    done(null, false, req.flash('registerMessage', "A unknown error occured."));
             });
         });
     }));
-
 
     //Middle ware for login
     passport.use('local-login', new LocalStrategy({

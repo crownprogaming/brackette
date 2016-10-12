@@ -3,6 +3,7 @@
  *******/
 var Users = require('../models/users').Users;
 var USERS2 = require('../models/users2');
+var UserInfo = require('../models/userInfo');
 var notFoundJSON = {
     "Error": "404",
     "Message": "Object was not found."
@@ -10,8 +11,11 @@ var notFoundJSON = {
 
 var userOptions = {
     attributes:{
-        // exclude: ['id', 'updatedAt'] for now show all.
-    }
+        exclude: ['id', 'updatedAt']
+    },
+    include: [{
+        model: UserInfo
+    }]
 };
 
 module.exports = function(app) {

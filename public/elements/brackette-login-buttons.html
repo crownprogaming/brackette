@@ -57,9 +57,10 @@
     noProfileImg: function(){
         if(this.userinfo != {}){
             //means that there is a userinfo object
-            if(this.userinfo.profileImg != ""){
+            console.log(this.userinfo.userInfos[0].profileImg);
+            if(this.userinfo.userInfos[0].profileImg != null){
                 //meaning there is no profileImg.
-                //TODO: this will be an image but better safe than sorry. Check if it's an actual image, else return false.
+                //TODO: this will be an image, but better safe than sorry. Check if it's an actual image, else return false.
                 return true;
             }
         }

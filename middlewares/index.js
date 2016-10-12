@@ -139,7 +139,7 @@ module.exports = {
     },
 
     isLoggedIn: function(req, res, next) {
-        console.log("checking if logged in");
+        console.log("checking if logged in ->"+req.isAuthenticated());
         if (req.isAuthenticated()) return next();
         res.redirect('/');
     },
@@ -148,7 +148,7 @@ module.exports = {
         //every ejs file must know if we are logged in or not. this passes the variable of
         //is authenticated to every file.
         res.locals.loggedIn = req.isAuthenticated();
-        res.locals.userInfo = req.user ? req.user : {}
+        res.locals.user = req.user ? req.user : {}
         next();
     },
 
