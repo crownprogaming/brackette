@@ -45,20 +45,22 @@
         },
         userinfo: {
             type: Object
+        },
+        user: {
+            type: Object
         }
     },
     _isLoggedIn: function(auth, valueNeeded){
         return auth == valueNeeded;
     },
     ready: function(){
-
+        this.userinfo = this.user.userInfos == undefined ? {} : this.user.userInfos[0];
     },
 
     noProfileImg: function(){
         if(this.userinfo != {}){
             //means that there is a userinfo object
-            console.log(this.userinfo.userInfos[0].profileImg);
-            if(this.userinfo.userInfos[0].profileImg != null){
+            if(this.userinfo.profileImg != null){
                 //meaning there is no profileImg.
                 //TODO: this will be an image, but better safe than sorry. Check if it's an actual image, else return false.
                 return true;

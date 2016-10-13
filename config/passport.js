@@ -51,7 +51,7 @@ module.exports = function(passport) {
                 defaults: {
                     name: req.body.name,
                     email: email,
-                    password: password
+                    password: Users.generateHash(password)
                 }
             }).spread(function(user, created){
                 if(created){
@@ -77,28 +77,31 @@ module.exports = function(passport) {
     passport.use('local-login', new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
-        passReqToCallback: true //allow to pass entire request.
+        passReqToCallback: true 
     }, function(req, email, password, done) {
-        Users.getUserBy('email', email, function(err, user) {
-            if (err) return done(err);
-            if (!user[0]) {
-                return done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password'));
-            }
-            if(user[0].password){
-                //We have a password
-                if (!Users.validPassword(password, user[0].password)) {
-                    return done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password')); // create the loginMessage and save it to session as flashdata
-                }else{
-                    return done(null, user[0]);
-                }
-            }else if((user[0].password === null) && user[0].facebook_token){
-                //No password but has a facebook token, so just throw error that this account 'already exists' by showing wrong password.
-                return done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password'));
+        USERS2.findOne({where:{
+            email: email
+        }}).then(function(user){
+            console.dir(user.password);
+            if(!user){
+               return done(null, false, req.flash('loginMessage', 'No user exists.'));
             }else{
-                //No password AND no token...
-                return done(null, false, req.flash('loginMessage', 'rong E-mail and/or Password'));
-            }
-
+                if(user.password){
+                    //we have a password
+                    if(!Users.validPassword(password, user.password)){
+                        return done(null, false, req.flash('loginMessage', 'Password no matches')); // create the loginMessage and save it to session as flashdata
+                    }else{
+                        return done(null, user);
+                    }
+                }else if((user.password == null) && user.facebookToken){
+                    done(null, false, req.flash('loginMessage', 'Wrong E-mail and/or Password'));
+                }
+                else{
+                    return done(null, false, req.flash('loginMessage', 'No Password')); //no password ?
+                }
+             }
+        }).catch(function(err){
+            return done(null, false, req.flash('loginMessage', 'Something went wrong.'));            
         });
     }));
 

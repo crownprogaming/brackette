@@ -36,7 +36,7 @@
             <strong>email</strong>: [[user.email]]<br>
             <!--<strong>password</strong>: <br>-->                        
             <strong>profileImg</strong>: [[userinfo.profileImg]]<br>
-            <p><strong>Name:</strong><inline-edit value="{{user.name::input}}" id="userName" hoverstyle="true"></inline-edit></p>
+            <p><strong>Name:</strong><inline-edit id="name" value="{{user.name::input}}" id="userName"></inline-edit></p>
             <p><strong>Gamer Tag:</strong><inline-edit value="{{userinfo.gamerTag::input}}" id="userNameTag" hoverstyle="true"></inline-edit></p>
            <!--<strong>facebook_id</strong>: <br>
             <strong>facebook_token</strong>: <br>
@@ -57,27 +57,27 @@
         }
     },
 
-    //each value needs it's own obverse :P 
+    /*each value needs it's own obverse :P 
     observers: [
         'userNameChanged(user.name)',
         'userNameChanged(userinfo.gamerTag)',
     ],
-
+    */
     ready: function(){
-     
+        this.userinfo = this.user.userInfos == undefined ? {} : this.user.userInfos[0];
     },
+    /*
     userNameChanged: function(val){
         console.dir("value changed");
         console.dir(this.user);
         console.dir(this.userinfo);
         saveButton.disabled = false;
-    },
+    },*/
 
     okayToSave: function(){
 
     }
 
   });
-
 </script>
 </dom-module>

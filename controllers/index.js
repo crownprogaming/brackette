@@ -95,4 +95,9 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
+
+    app.post("/profile/update", function(req, res){
+        console.dir(req.body);
+        console.log("Hey it worked. Cool");
+    });
 };
