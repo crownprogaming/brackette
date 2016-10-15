@@ -12,6 +12,11 @@
             background-color:lightgrey;
             color: white;
         }
+        .user_info_input{
+        }
+        .userInput{
+            display: inline-block;
+        }
     </style>
         <div>
             <div class="well">
@@ -32,12 +37,18 @@
                 </div>
             </div>
             <h3><i class="mdi mdi-account"></i> User Information</h3>
-            <!--<strong>id</strong>: <%= user.id %><br>-->                        
-            <strong>email</strong>: [[user.email]]<br>
+            <!--<strong>id</strong>: <%= user.id %><br>-->
+            <div>                       
+                <strong>email</strong>: [[user.email]]<br>
+            </div>
             <!--<strong>password</strong>: <br>-->                        
             <strong>profileImg</strong>: [[userinfo.profileImg]]<br>
-            <p><strong>Name:</strong><inline-edit id="name" value="{{user.name::input}}" id="userName"></inline-edit></p>
-            <p><strong>Gamer Tag:</strong><inline-edit value="{{userinfo.gamerTag::input}}" id="userNameTag" hoverstyle="true"></inline-edit></p>
+            <div class="user_info_input">
+                <p><strong>Name:&nbsp;</strong><inline-edit id="name" value="{{user.name}}" id="userName" class="userInput"></inline-edit></p>
+            </div>
+            <div class="user_info_input">
+                <p><strong>Gamer Tag:&nbsp;</strong><inline-edit id="gamertag" value="{{userinfo.gamerTag}}" id="userNameTag" class="userInput"></inline-edit></p>
+            </div>
            <!--<strong>facebook_id</strong>: <br>
             <strong>facebook_token</strong>: <br>
             <strong>google_token</strong>: <br>
@@ -63,9 +74,7 @@
         'userNameChanged(userinfo.gamerTag)',
     ],
     */
-    ready: function(){
-        this.userinfo = this.user.userInfos == undefined ? {} : this.user.userInfos[0];
-    },
+    ready: function(){    },
     /*
     userNameChanged: function(val){
         console.dir("value changed");

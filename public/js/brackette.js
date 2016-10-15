@@ -7,13 +7,13 @@ $(function(){
 
     console.log("Running");
     //not that smart but it's only a few vields so
-    $('inline-edit').on("focusout", function(e){
+    $('#name').on("focusout", function(e){
         e.preventDefault();
         $.ajax({
             url: '/profile/update',
             type: 'POST',
             dataType: 'json',
-            data: $('#name').value,
+            data: {newName: this.value},
             cache: false,
             timeout: 5000,
             success: function(data){
@@ -21,6 +21,24 @@ $(function(){
             },
             error: function(){
                 console.log("Somethign bad happened. RIP");
+            }
+        });
+    });
+
+    $('#gamertag').on("focusout", function(e){
+        e.preventDefault();
+        $.ajax({
+            url: '/profile/update',
+            type: 'POST',
+            dataType: 'json',
+            data: {newGamerTag: this.value},
+            cache: false,
+            timeout: 5000,
+            success: function(data){
+                console.log("Success.");
+            },
+            error: function(){
+                console.error("Somethign bad happened. RIP");
             }
         });
     });

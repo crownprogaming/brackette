@@ -98,6 +98,11 @@ module.exports = function(app, passport) {
 
     app.post("/profile/update", function(req, res){
         console.dir(req.body);
+        var response = {
+            status  : 200,
+            success : 'Updated Successfully'
+        }
         console.log("Hey it worked. Cool");
+        res.end(JSON.stringify(response));
     });
 };
