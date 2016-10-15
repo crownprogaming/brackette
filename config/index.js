@@ -48,6 +48,7 @@ module.exports = {
 
     getSequelize: function(){
         var seq = new Sequelize(process.env.MYSQL_DB, process.env.MYSQL_USER, process.env.MYSQL_PASS, {
+            logging: false,
             host: process.env.HOST,
             dialect: 'mysql',
             pool: {
