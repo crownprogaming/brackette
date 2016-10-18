@@ -5,11 +5,14 @@ var bcrypt = require('bcrypt-nodejs');
 var async = require('async');
 var crypto = require('crypto');
 var Users = require('../models/users').Users;
+var Users2 = require("../models/users2");
+var UserInfos = require("../models/userInfo");
 var moment = require("moment");
 var nodemailer = require("nodemailer");
 var sgTransport = require('nodemailer-sendgrid-transport');
 
 module.exports = {
+    //TODO: Update this method with sequelize.
     resetPassword: function(req, res, next) {
         async.waterfall([
             function(done) {
@@ -68,6 +71,7 @@ module.exports = {
         });
     },
 
+    //TODO: Update this method with sequelize.
     displayPasswordResetPage: function(req, res, next) {
         Users.getUserBy('resetToken', req.params.token, function(err, results) {
             if (err) {
@@ -85,6 +89,7 @@ module.exports = {
         });
     },
 
+    //TODO: Update this method with sequelize.
     setResetPassword: function(req, res, next) {
         async.waterfall([
             function(done) {
@@ -161,6 +166,7 @@ module.exports = {
     },
 
     //TODO: what happens if user disconnects accounts but has no password ? maybe we should setup a default password 
+    //TODO: Update this method with sequelize.
     //if they register via facebook/google ? 
     disconnectFacebook: function(req, res, next){
         req.user.facebook_token = null;
@@ -170,12 +176,33 @@ module.exports = {
         });
     }, 
 
+    //TODO: Update this method with sequelize.
     disconnectGoogle: function(req, res, next){
         req.user.google_token = null;
         Users.updateUser('google', req.user, function(err, succ){
             if(err) throw err;
             return res.redirect("/profile");
         });
+    },
+
+    updateProfileInfo: function(req, res, next){
+        //How to update other fields from different tables ? 
+        UserInfos.update(req.body,
+            {
+            where:{
+                userId: req.user.id
+            } 
+        }).then(function(result){
+            console.dir(result);
+            console.log("User was updated! Yay");
+            var response = {
+                status: 200,
+                success: 'Updated Successfully'
+            }
+            res.end(JSON.stringify(response));
+        }).catch(function(err){
+            console.log("Something went wrong when updating the users profile page.");
+        })
     },
 
     isAdmin: function(req, res, next) {

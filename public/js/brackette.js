@@ -13,7 +13,7 @@ $(function(){
             url: '/profile/update',
             type: 'POST',
             dataType: 'json',
-            data: {newName: this.value},
+            data: {name: this.value},
             cache: false,
             timeout: 5000,
             success: function(data){
@@ -31,7 +31,7 @@ $(function(){
             url: '/profile/update',
             type: 'POST',
             dataType: 'json',
-            data: {newGamerTag: this.value},
+            data: {gamerTag: this.value},
             cache: false,
             timeout: 5000,
             success: function(data){

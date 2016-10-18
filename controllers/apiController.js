@@ -2,7 +2,7 @@
  *  Our API Controllers. 
  *******/
 var Users = require('../models/users').Users;
-var USERS2 = require('../models/users2');
+var Users = require('../models/users2');
 var UserInfo = require('../models/userInfo');
 var notFoundJSON = {
     "Error": "404",
@@ -23,7 +23,7 @@ module.exports = function(app) {
     //Users - GET METHODS
     app.get('/api/users', function(req, res) {
 
-        USERS2.findAll(userOptions).then(function(user){
+        Users.findAll(userOptions).then(function(user){
             res.json(user);
         }).catch(function(err){
             res.status(500).send("Server Error");
@@ -31,7 +31,7 @@ module.exports = function(app) {
     });
 
     app.get('/api/users/:id', function(req, res) {
-        USERS2.findById(req.params.id, userOptions).then(function(user){
+        Users.findById(req.params.id, userOptions).then(function(user){
             if(user == null || user == [] || user == "" || user == undefined || user == {} || (isNaN(req.params.id))) {
                 res.json(notFoundJSON);
                 return;

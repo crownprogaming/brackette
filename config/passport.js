@@ -73,6 +73,7 @@ module.exports = function(passport) {
         });
     }));
 
+    //TODO: Update this method with sequelize.
     //Middle ware for login
     passport.use('local-login', new LocalStrategy({
         usernameField: 'email',
@@ -105,6 +106,7 @@ module.exports = function(passport) {
         });
     }));
 
+    //TODO: Update this method with sequelize.
     //Middleware for Facebook.
     passport.use(new FacebookStrategy({
         clientID: process.env.FBCLIENTID,
@@ -168,7 +170,7 @@ module.exports = function(passport) {
     
     }))
 
-
+    //TODO: Update this method with sequelize.
     //Middleware for Google+
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLECLIENTID,
