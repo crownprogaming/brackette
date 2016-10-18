@@ -20,6 +20,7 @@ config.setup();
 var port = process.env.PORT || 3000;
 var indexController = require("./controllers");
 var apiController = require('./controllers/apiController');
+var tournamentsController = require("./controllers/tournamentsController");
 require('./config/passport')(passport);
 
 // Begin Middleware
@@ -49,6 +50,7 @@ app.use(middlewares.setLocals);
 //Call in our controllers/routes
 apiController(app); //No passport for API, api just retrieves.
 indexController(app, passport);
+tournamentsController(app);
 
 //404
 app.get('*', function(req, res){

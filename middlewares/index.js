@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var Users = require('../models/users').Users;
 var Users2 = require("../models/users2");
 var UserInfos = require("../models/userInfo");
+var Tournaments = require("../models/tournaments");
 var moment = require("moment");
 var nodemailer = require("nodemailer");
 var sgTransport = require('nodemailer-sendgrid-transport');

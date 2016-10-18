@@ -4,6 +4,7 @@
 var Users = require('../models/users').Users;
 var Users = require('../models/users2');
 var UserInfo = require('../models/userInfo');
+var Tournaments = require("../models/tournaments");
 var notFoundJSON = {
     "Error": "404",
     "Message": "Object was not found."
@@ -50,7 +51,11 @@ module.exports = function(app) {
 
     //Tournaments - GET 
     app.get('/api/tournaments', function(req, res) {
-        res.send("Here all the tournaments would be displayed.");
+        Tournaments.findAll().then(function(tournament){
+            res.json(tournament);
+        }).catch(function(err){
+            res.status(500).send("Server Error");
+        });
     });
 
 };

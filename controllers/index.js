@@ -11,12 +11,6 @@ module.exports = function(app, passport) {
         res.render('index');
     });
 
-    app.get('/pol', function(req, res){
-        res.render('pol', {
-            message: req.flash('registerMessage')
-        });
-    });
-
     app.get('/register', middlewares.redirectIfLoggedIn, function(req, res) {
         res.render('register', {
             message: req.flash('registerMessage')
