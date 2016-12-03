@@ -15,3 +15,5 @@ Become a contributor
 
 If you are a developer and would like to be part of our project, please message me [on Twitter](https://twitter.com/realDanBoy)
 
+Check out [our Trello](https://trello.com/b/qanui9Dy/brackette) to see the projects status.
+
