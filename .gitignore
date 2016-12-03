@@ -43,3 +43,6 @@ dist
 
 # JetBrain nonsense
 .idea
+
+#Visual Studio Code nonsense
+.vscode

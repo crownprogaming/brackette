@@ -147,7 +147,7 @@ module.exports = {
     isLoggedIn: function(req, res, next) {
         console.log("checking if logged in ->"+req.isAuthenticated());
         if (req.isAuthenticated()) return next();
-        res.redirect('/');
+        res.redirect('/register');
     },
 
     setLocals: function(req, res, next){
@@ -187,7 +187,7 @@ module.exports = {
     },
 
     updateProfileInfo: function(req, res, next){
-        //How to update other fields from different tables ? 
+        //How to update other fields from different tables ?
         UserInfos.update(req.body,
             {
             where:{

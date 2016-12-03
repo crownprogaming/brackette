@@ -175,7 +175,7 @@
                 <template is="dom-if" if="[[!notHomePage()]]">
                     <paper-tabs class="bottom self-end" selected="0" fit-container>
                         <paper-tab name="home">HOME</paper-tab>
-                        <paper-tab name="browse">BROWSE</paper-tab>
+                        <paper-tab name="tournaments">TOURNAMENTS</paper-tab>
                         <paper-tab name="your events">YOUR EVENTS</paper-tab>
                     </paper-tabs> 
                 </template>
@@ -200,6 +200,10 @@
 
     ready: function(){
         this.userinfo = this.user.userInfos == undefined ? {} : this.user.userInfos[0];
+    },
+
+    _isLoggedIn: function(auth, valueNeeded){
+        return auth == valueNeeded;
     },
 
     notHomePage: function(){
