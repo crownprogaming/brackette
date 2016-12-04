@@ -1,9 +1,61 @@
 <% include partials/header %>
-
 <!--If a include is present, this means that this ejs file is it's own page, meaning there must be a controller for it. -->
+
     <div class="container">
         <div>
-            Create new tournaments.
+            <form is="iron-form" method="get" action="/tournament/create" id="create-tournament">
+                <paper-input name="tournamentName" label="Tournament Name" required></paper-input>
+                <br>
+                <paper-input name="startDate" label="Start Date" required></paper-input>
+                <paper-radio-group>
+                    <label>Tournament Size</label>
+                    <paper-radio-button name="small">50 or less</paper-radio-button>
+                    <paper-radio-button name="t">50 - 200</paper-radio-button>
+                    <paper-radio-button name="fi">200 - 500</paper-radio-button>
+                    <paper-radio-button name="th">500 - 1000</paper-radio-button>
+                    <paper-radio-button name="big">1000+</paper-radio-button>
+                </paper-radio-group>
+                <br>
+                <paper-input name="email" label="Account E-mail" required></paper-input>
+                <br>
+                <paper-toggle-button>Hide Tournament</paper-toggle-button> 
+                <paper-button raised onclick="dialog.toggle()">?</paper-button>
+                    <simple-dialog id="dialog">
+                    <h2>Hide Tournament</h2>
+                    <p>Tournaments can never be deleted. However, you can choose whether to show this tournament to the public. Only admins of this tournament (aka you) will be able to see it.</p>
+                    </simple-dialog>
+                <br>
+                <paper-input name="facebookEvent" label="Facebook Event Page" required></paper-input>
+                <br>
+                <paper-input name="venueName" label="Venue Name"></paper-input>
+                <br>
+                <paper-input name="venueAddress" label="Venue Address"></paper-input>
+                <br>
+                <paper-input name="videoUrl" label="Video Url"></paper-input>
+                <br>
+                <iron-autogrow-textarea rows="4" name="details" placeholder="Tournament Info" required></iron-autogrow-textarea>
+                <br>
+                <iron-autogrow-textarea rows="4" name="rules" placeholder="Tournament Rules" required></iron-autogrow-textarea><paper-toggle-button>Use EVO Rules</paper-toggle-button> 
+                <br>
+                <iron-autogrow-textarea rows="4" name="contact" placeholder="Contact Info" required></iron-autogrow-textarea>
+                <br>
+                <paper-button raised onclick="_submit(event)">Submit</paper-button>
+                <paper-button raised onclick="_reset(event)">Reset</paper-button>
+                <div class="output"></div>
+            </form>
+            <script>
+
+            function _submit(event) {
+                Polymer.dom(event).localTarget.parentElement.submit();
+            }
+
+            function _reset(event) {
+                var form = Polymer.dom(event).localTarget.parentElement
+                form.reset();
+                form.querySelector('.output').innerHTML = '';
+            }
+
+            </script>
         </div>
     </div>
 

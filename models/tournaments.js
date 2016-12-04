@@ -63,7 +63,8 @@ var Tournaments = sequelize.define('tournaments', {
         type: Sequelize.DATE,
         field: 'end_date',
         defaultValue: null
-    }
+    },
+
 });
 Tournaments.sync();
 module.exports = Tournaments;

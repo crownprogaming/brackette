@@ -38,6 +38,10 @@
     "social-iconset": "^0.0.5",
     "bootstrap-social": "^5.0.0",
     "iron-ajax": "PolymerElements/iron-ajax#^1.4.3",
-    "inline-edit": "HappyZombies/polymer-inline-edit"
+    "inline-edit": "HappyZombies/polymer-inline-edit",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.2.1",
+    "paper-radio-group": "PolymerElements/paper-radio-group#^1.2.1",
+    "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^1.2.7",
+    "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#^1.0.14"
   }
 }
