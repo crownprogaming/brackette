@@ -1,7 +1,7 @@
-/********
- * This is our custom database queries for Tournaments, pulls in data about the tournaments
- *********/
-var sequelize = require('../config').getSequelize();
+/**
+ * This is our database table setup for Tournaments.
+ */
+var sequelize = require('../lib/db').getSequelize();
 var Sequelize = require('sequelize');
 var Tournaments = sequelize.define('tournaments', {
     name: {
@@ -10,7 +10,7 @@ var Tournaments = sequelize.define('tournaments', {
         allowNull: false,
     },
     ownerId: {
-        type: Sequelize.INTEGER(11),
+        type: Sequelize.INTEGER(),
         field: 'owner_id',
         allowNull: false,
     },
@@ -54,6 +54,11 @@ var Tournaments = sequelize.define('tournaments', {
         field: 'venue_address',
         defaultValue: null,
     },
+    admins: {
+        type: Sequelize.ARRAY(Sequelize.DataTypes.DECIMAL),
+        field: 'admins',
+        allowNull: false
+    },
     startAt: {
         type: Sequelize.DATE,
         field: 'start_date',
@@ -66,5 +71,22 @@ var Tournaments = sequelize.define('tournaments', {
     },
 
 });
-Tournaments.sync();
+
+/**
+ * Always add a test tournament
+ */
+Tournaments.sync({force: true}).then(function(){
+    return Tournaments.create({
+        name: "Mel Hype",
+        ownerId: 1,
+        slug: 'mel-hype',
+        admins: [1,2],
+        createdAt: new Date(),
+        updateAt: new Date()
+    })
+}).catch(Sequelize.UniqueConstraintError, function(err){
+    //TODO: Find out what this is ???
+    console.log("There was an error with Sequelize...");
+});
+
 module.exports = Tournaments;

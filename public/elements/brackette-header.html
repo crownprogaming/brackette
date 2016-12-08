@@ -191,15 +191,11 @@
         },
         user: {
             type: Object
-        },
-
-        userinfo: {
-            type: Object
         }
     },
 
     ready: function(){
-        this.userinfo = this.user.userInfos == undefined ? {} : this.user.userInfos[0];
+        console.dir(this.authentication);
     },
 
     _isLoggedIn: function(auth, valueNeeded){

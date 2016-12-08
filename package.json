@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Daniel <daniel.reguero@hotmail.com>, Steven Dolbey <steven.dolbey@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.1",
@@ -20,16 +20,16 @@
     "express-session": "^1.14.1",
     "method-override": "^2.3.6",
     "moment": "^2.15.0",
-    "mysql": "^2.11.1",
     "nodemailer": "^2.6.0",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
+    "pg": "^6.1.0",
+    "pg-hstore": "^2.3.2",
     "sequelize": "^3.24.3",
-    "serve-favicon": "^2.3.0",
-    "squel": "^5.4.2"
+    "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
     "commander": "^2.9.0",

@@ -1,9 +1,10 @@
 {
-  "name": "poly",
+  "name": "Brackette",
   "description": "Full suite of tools for tournament organizers.",
   "main": "app.js",
   "authors": [
-    "Daniel <daniel.reguero@hotmail.com>"
+    "Daniel <daniel.reguero@hotmail.com>",
+    "Steven <steven.dolbey@gmail.com>"
   ],
   "license": "ISC",
   "keywords": [

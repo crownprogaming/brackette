@@ -12,8 +12,6 @@
             background-color:lightgrey;
             color: white;
         }
-        .user_info_input{
-        }
         .userInput{
             display: inline-block;
         }
@@ -42,12 +40,12 @@
                 <strong>email</strong>: [[user.email]]<br>
             </div>
             <!--<strong>password</strong>: <br>-->                        
-            <strong>profileImg</strong>: [[userinfo.profileImg]]<br>
+            <strong>profileImg</strong>: [[user.userInfo.profileImg]]<br>
             <div class="user_info_input">
                 <p><strong>Name:&nbsp;</strong><inline-edit id="name" value="{{user.name}}" id="userName" class="userInput"></inline-edit></p>
             </div>
             <div class="user_info_input">
-                <p><strong>Gamer Tag:&nbsp;</strong><inline-edit id="gamertag" value="{{userinfo.gamerTag}}" id="userNameTag" class="userInput"></inline-edit></p>
+                <p><strong>Gamer Tag:&nbsp;</strong><inline-edit id="gamertag" value="{{user.gamerTag}}" id="userNameTag" class="userInput"></inline-edit></p>
             </div>
            <!--<strong>facebook_id</strong>: <br>
             <strong>facebook_token</strong>: <br>
@@ -61,9 +59,6 @@
     is: 'brackette-profile',
     properties:{
         user: {
-            type: Object
-        },
-        userinfo: {
             type: Object
         }
     },
