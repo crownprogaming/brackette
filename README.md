@@ -1,6 +1,7 @@
 # Brackette
 ===================
 [![Build Status](https://travis-ci.org/crownprogaming/brackette.svg?branch=master)](https://travis-ci.org/crownprogaming/brackette)
+![Shields.io](https://img.shields.io/badge/Version-0.0.0b-blue.svg)
 <p align="center"><img src="/public/img/logo-300x300.png"></p>
 
 Brackette allows you to manage your eSports tournaments with ease! With built a built in bracket system, tournament registration, event configuration and many more tools that allow you to run your tournament with the most ease as possible! 
