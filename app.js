@@ -17,8 +17,9 @@ var express = require('express'),
     flash = require("connect-flash"),
     session = require("express-session"),
     favicon = require("serve-favicon");
-    middlewares = require("./lib/middlewares");
-
+    middlewares = require("./lib/middlewares"),
+    global.logger = require("./lib/logger");
+logger.info("Starting Brackette");
 /**
  * Setup local variables.
  */
@@ -65,14 +66,7 @@ user_registration(app, passport);
 // tournamentsController(app);
 
 /**
- * 404 
- */
-app.get('/', function(req, res){
-  res.send('hello world');
-});
-
-/**
  * Listen on port specified.
  */
 app.listen(port);
-console.log("Website is running on http://" + process.env.HOST + ":" + port);
+logger.info("Website is running on http://" + process.env.HOST + ":" + port);

@@ -9,7 +9,7 @@
           margin: 0px;
           height: 100vh;
           background-color: var(--paper-grey-50);
-      } 
+      }
     </style>
     <style is="custom-style">
         .flex-center-justified {
@@ -17,7 +17,7 @@
           @apply(--layout-center-justified);
         }
         @media screen and (max-width: 768px) {
-            
+
         }
         @media screen and (min-width: 768px) {
             .main {
@@ -159,7 +159,7 @@
         }
     </style>
       <header class="fullbleed layout vertical container">
-            
+
             <paper-toolbar class="medium-tall logo">
                 <div class="title" id="BebasNeue">
                     <img src="/assets/img/logo-150x150.png" class="pull-xs-left" width="40px">&nbsp;Brackette
@@ -169,7 +169,7 @@
                 <template is="dom-if" if="[[notHomePage()]]">
                     <paper-tabs class="bottom self-end" fit-container>
                         <paper-tab id="homePage">HOME</paper-tab>
-                    </paper-tabs> 
+                    </paper-tabs>
                 </template>
 
                 <template is="dom-if" if="[[!notHomePage()]]">
@@ -177,13 +177,13 @@
                         <paper-tab name="home">HOME</paper-tab>
                         <paper-tab name="tournaments">TOURNAMENTS</paper-tab>
                         <paper-tab name="your events">YOUR EVENTS</paper-tab>
-                    </paper-tabs> 
+                    </paper-tabs>
                 </template>
-            </paper-toolbar>  
+            </paper-toolbar>
       </header>
     </template>
   <script>
-  Polymer({ 
+  Polymer({
     is: 'brackette-header',
     properties:{
         authentication:{
@@ -204,7 +204,7 @@
 
     notHomePage: function(){
         if(window.location.href.split('/').pop() != ''){
-            //not the home page, 
+            //not the home page,
             return true;
         }
         return false;

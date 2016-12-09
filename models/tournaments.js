@@ -83,10 +83,11 @@ Tournaments.sync({force: true}).then(function(){
         admins: [1,2],
         createdAt: new Date(),
         updateAt: new Date()
-    })
+    });
 }).catch(Sequelize.UniqueConstraintError, function(err){
     //TODO: Find out what this is ???
-    console.log("There was an error with Sequelize...");
+    logger.error("There was a error with sequelize when attempting to"+
+    " generate the model and seed the database. Message:" + err.message);
 });
 
 module.exports = Tournaments;

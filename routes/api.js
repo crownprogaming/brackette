@@ -19,34 +19,35 @@ module.exports = function(app){
         Users.findAll(userOptions).then(function(user){
             res.json(user);
         }).catch(function(err){
+            logger.error("There was a server error for api/users. Message:" + err.message);
             res.status(500).send("Server Error");
         });
     });
 
     app.get('/api/users/:id', function(req, res) {
         Users.findById(req.params.id, userOptions).then(function(user){
-            if(user == null || user == [] || user == "" || user == undefined || user == {} || (isNaN(req.params.id))) {
+            if(user === null || user == [] || user === "" || user === undefined || user == {} || (isNaN(req.params.id))) {
                 res.json(notFoundJSON);
                 return;
             }
             res.json(user);
         }).catch(function(err){
+            logger.error("There was a server error for api/users/"+req.params.id+". Message:" + err.message);
             res.status(500).send("Server Error");
         });
     });
 
     app.post('/api/users', function(req, res) {
-        
+
     });
 
     app.get('/api/tournaments', function(req, res) {
         Tournaments.findAll().then(function(tournament){
             res.json(tournament);
         }).catch(function(err){
+            logger.error("There was a server error for api/tournaments. Message:" + err.message);
             res.status(500).send("Server Error");
         });
     });
 
-
-
-}
+};

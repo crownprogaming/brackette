@@ -11,7 +11,7 @@
         paper-button.brackette-button:hover {
            background-color: var(--paper-cyan-500);
         }
-       
+
     </style>
         <div class="farRightHeader">
             <template is="dom-if" if="[[_isLoggedIn(authentication, 'true')]]">
@@ -23,7 +23,7 @@
                     <template is="dom-if" if="[[!profileImgExist()]]">
                         <paper-icon-button class="toolbar" icon="account-circle" title="Profile" last-response="method"></paper-icon-button>
                     </template>
-                  
+
                 </a>
             </template>
             <template is="dom-if" if="[[_isLoggedIn(authentication, 'false')]]" >
@@ -37,7 +37,7 @@
         </div>
 </template>
   <script>
-  Polymer({ 
+  Polymer({
     is: 'brackette-login-buttons',
     properties:{
         authentication:{
@@ -57,7 +57,7 @@
     profileImgExist: function(){
         if(this.user != {}){
             //means that there is a user object
-            console.dir(this.user); 
+            console.dir(this.user);
             if(this.user.userInfo.profileImg == null || this.user.userInfo.profileImg == ""){
                 //meaning there is no profileImg.
                 //TODO: this will be an image, but better safe than sorry. Check if it's an actual image, else return false.
