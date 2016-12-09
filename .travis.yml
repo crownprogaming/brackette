@@ -1,10 +1,13 @@
 sudo: false
 language: node_js
 node_js:
-  - "6"
+  - "6.9.1"
+  - "node"
+  - "iojs"
+  - "stable"
 before_script:
-  - nvm install stable
   - npm install -g semistandard
+  - node --harmony
 cache:
   directories:
     - node_modules
