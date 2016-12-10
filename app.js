@@ -31,6 +31,7 @@ var port = process.env.PORT || 3000;
 var api = require('./routes/api');
 var index = require('./routes/index');
 var userRegistration = require('./routes/user-registration');
+var tournaments = require('./routes/tournaments');
 
 /**
  * Begin Middleware
@@ -64,8 +65,7 @@ app.use(middlewares.setLocals);
 api(app);
 index(app);
 userRegistration(app, passport);
-// indexController(app, passport);
-// tournamentsController(app);
+tournaments(app);
 
 /**
  * Listen on port specified.
