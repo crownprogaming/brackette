@@ -1,5 +1,6 @@
 /**
  * This is our database table setup for Tournaments.
+ * TODO: Add cols that are needed.
  */
 var sequelize = require('../lib/db').getSequelize();
 var Sequelize = require('sequelize');

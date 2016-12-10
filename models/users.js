@@ -3,6 +3,7 @@
  */
 var sequelize = require('../lib/db').getSequelize();
 var Sequelize = require('sequelize');
+var Tools = require('../lib/helpers');
 var Users = sequelize.define('users', {
   name: {
     type: Sequelize.STRING(150),
@@ -62,10 +63,10 @@ Users.sync({force: true}).then(function () {
   return Users.create({
     name: 'Daniel Reguero',
     email: 'daniel.reguero@hotmail.com',
-    password: 'password',
+    password: Tools.generateHash('password'),
     userInfo: {
       gamerTag: 'DEEJAY',
-      profileImg: 'https://google/com'
+      profileImg: 'https://remyvanruiten.files.wordpress.com/2011/10/mega-man9-copy-432x4501-1.jpg'
     },
     createdAt: new Date(),
     updateAt: new Date()
